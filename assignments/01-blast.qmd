@@ -146,3 +146,15 @@ grep -c ">" data/Ab_4denovo_CLC6_a.fa
 -outfmt 6
 
 ```
+```{bash}
+
+head -2 output/Ab_4-uniprot_blastx.tab
+#-2 part says you only want to see first two lines of file 
+wc -l output/Ab_4-uniprot_blastx.tab
+#wc = word count, -1 = counts number of files 
+
+```
+```{bash}
+
+```
+
