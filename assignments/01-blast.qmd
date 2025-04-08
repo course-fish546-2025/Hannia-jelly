@@ -84,26 +84,26 @@ ls
 head /home/jovyan/blastdb/uniprot*
 #cant see the head of file, says does not exist
 ```
+
 ```{bash}
 /home/jovyan/applications/ncbi-blast-2.16.0+/bin/makeblastdb \
-
--in ../../blastdb/uniprot_sprot_r2025_01.fasta \
+-in ../../blastdb/uniprot_sprot_r2023_01.fasta \
 -dbtype prot \
--out ../../blastdb/uniprot_sprot_r2025_01
+-out /home/jovyan/blastdb/uniprot_sprot_r2023_01
+
 #####chunk below is same, just trying to see if line 92 makes a diff compared to line 103
 pwd
+##changing data back to 2023 bc that is the file that Robert installed 
+#deleted comments w # because chatgpt said not to have any spaces after \ 
 
 ```
 
 ```{bash}
-cd /home/jovyan/applications/ncbi-blast-2.16.0+/bin/makeblastdb \
+ls -l /home/jovyan/applications/ncbi-blast-2.16.0+/bin/makeblastdb
 
--in /home/jovyan/blastdb/uniprot_sprot_r2025_01.fasta \
+#ls -l is checking to see if this code is directory or "executable file" 
+
 #-input file for datbase creation. -in tells makeblastdb which sequence file to use as source for database. 
--dbtype prot \ 
--out /home/jovyan/blastdb/uniprot_sprot_r2025_01
-pwd
-
 #dbtype prot = protein sequence as opposed to nucleotides. 
 
 #-out species output location and base name for BLAST database files that will be created. name is "uniprot_sprot_r..."
@@ -114,19 +114,35 @@ Getting query sequence
 
 ```{bash}
 #copying Steven's code from zoom 
+#currently in "assignments" tab so can put data in assignments/data folder
 
 curl https://eagle.fish.washington.edu/cnidarian/Ab_4denovo_CLC6_a.fa \
 -k \
-> ../../blastdb/Ab_4denovo_CLC6_a.fa 
+> data/Ab_4denovo_CLC6_a.fa
 
-head ../../blastdb/Ab_4denovo_CLC6_a.fa
-echo "How many sequences are there?"
-grep -c ">" ../../blastdb/Ab_4denovo_CLC6_a.fa
 ```
 
 ```{bash}
 
+head data/Ab_4denovo_CLC6_a.fa
 
+```
 
+```{bash}
+echo "How many sequences are there?"
+grep -c ">" data/Ab_4denovo_CLC6_a.fa
+```
+
+```{bash}
+#running blast 
+
+/home/jovyan/applications/ncbi-blast-2.16.0+/bin/blastx \
+-query data/Ab_4denovo_CLC6_a.fa \
+-db ../../blastdb/uniprot_sprot_r2023_01 \
+-out output/Ab_4-uniprot_blastx.tab \
+-evalue 1E-20 \
+-num_threads 1 \
+-max_target_seqs 1 \
+-outfmt 6
 
 ```
