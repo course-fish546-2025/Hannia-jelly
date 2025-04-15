@@ -1,0 +1,30 @@
+---
+title: "Week 3 reading questions"
+output: html_document
+date: "2025-04-15"
+---
+
+**An R Markdown file is plain text file that contains what 3 important types of content?**
+
+1. A header that looks like this - - - 
+2. chunks of code that look begin and end with ``` 
+3. Text with # infront, text w.out the #, or text that is italicized (_italics_) 
+
+**What is a chunk and how do you add them? of the many chunk options which one do you think you will use the most and why? How is inline code different than code chunks?**
+
+A chunk is one to several lines of code that are written consecutively and can be ran at once. You can add them by using keyboard shortcut: Cmd/Ctrl + Alt + I
+The “Insert” green C button in the editor toolbar.Or by manually typing the chunk delimiters ```{language} and ```.
+
+There are 7 types of chunk options. eval = FALSE, include = FALSE, echo = FALSE, message = FALSE or warning = FALSE , results = 'hide', error = TRUE. The type of option I see myself using most is eval = FALSE because I like annotating my code to tell myself what each line means and sometimes i include examples in chunk sections and dont want them to run. 
+
+
+Inline code is different than code chunks because you can include the code anywhere in the text as long as you use ‘r insert code`.
+
+**What’s gone wrong with this code? Why are the points not blue?**
+The color is inside the aes() and it is being read as a variable with the name blue. The color “color = “blue” “ should be outside of the aes(). 
+
+**Of the many things we have done in class the past two weeks, what is one aspect you would like to revisit and spend more time on?**
+I would like to revisit the BLAST assignment. I know I will be using BLAST so I want to feel more comfortable navigating BLAST analysis on R. 
+
+
+
