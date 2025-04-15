@@ -159,4 +159,3 @@ wc -l output/Ab_4-uniprot_blastx.tab
 ```
 
 
-
