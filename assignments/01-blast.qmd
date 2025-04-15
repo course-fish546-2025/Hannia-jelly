@@ -154,8 +154,4 @@ wc -l output/Ab_4-uniprot_blastx.tab
 #wc = word count, -1 = counts number of files 
 
 ```
-```{bash}
-
-```
-
 
