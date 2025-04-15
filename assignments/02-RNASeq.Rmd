@@ -5,26 +5,219 @@ date: "2025-04-10"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{bash}
+#working on RNA-Seq assignment. Skip instructions until running Kallisto. 
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{bash}
+pwd
+cd /home/shared/8TB_HDD_02/hannia
+pwd
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+# put this to navigate kallisto /home/shared/kallisto/kallisto 
+```
+Downloading reference 
+```{bash}
+cd /home/shared/8TB_HDD_02/hannia/2.RNASeq/data
+curl --insecure -O https://gannet.fish.washington.edu/seashell/bu-github/nb-2023/Cgigas/data/rna.fna
 
-```{r cars}
-summary(cars)
+#grabbing fasta file of pacific oyster genes. 
+#-- insecure ignores the fact that gannet does not have security certificate to auntheticate. Not reccomended but we know server. 
+
+```
+Line 30-indexing file rna.fna while renmaing as "cgigas_roslin_rna.index"
+```{bash}
+/home/shared/kallisto/kallisto \
+index -i \
+/home/shared/8TB_HDD_02/hannia/2.RNASeq/data/cgigas_roslin_rna.index \
+/home/shared/8TB_HDD_02/hannia/2.RNASeq/data/rna.fna
+
+```
+Line 39-downloading several data files at once listed on URL using wget
+```{bash}
+cd /home/shared/8TB_HDD_02/hannia/2.RNASeq/data 
+wget --recursive --no-parent --no-directories \
+--no-check-certificate \
+--accept '*.fastq.gz' \
+https://gannet.fish.washington.edu/seashell/bu-github/nb-2023/Cgigas/data/nopp/
+```
+Line 46- making new folder in "output" folder 
+```{bash}
+cd /home/shared/8TB_HDD_02/hannia/2.RNASeq
+pwd
+mkdir /home/shared/8TB_HDD_02/hannia/2.RNASeq/output/kallisto_01 
+#mkdir makes new folder called kallisto01 up one directory level 
+
+#password: scallopscallop 
+
 ```
 
-## Including Plots
+line 57- creating subdirectory, view assignment instructions to annotate what each line is doing 
+```{bash}
+find /home/shared/8TB_HDD_02/hannia/2.RNASeq/data/*fastq.gz \
+| xargs basename -s _L001_R1_001.fastq.gz | xargs -I{} /home/shared/kallisto/kallisto \
+quant -i /home/shared/8TB_HDD_02/hannia/2.RNASeq/data/cgigas_roslin_rna.index \
+-o /home/shared/8TB_HDD_02/hannia/2.RNASeq/output/kallisto_01/{} \
+-t 40 \
+--single -l 100 -s 10 /home/shared/8TB_HDD_02/hannia/2.RNASeq/data/{}_L001_R1_001.fastq.gz
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{bash}
+#mkdir /home/shared/8TB_HDD_02/hannia/2.RNASeq/output/kallisto_01 #mkdir=make new output directory, already did this 
+find /home/shared/8TB_HDD_02/hannia/2.RNASeq/data/*fastq.gz \
+| xargs basename -s _L001_R1_001.fastq.gz | xargs -I{} /home/shared/kallisto/kallisto \
+quant -i /home/shared/8TB_HDD_02/hannia/2.RNASeq/data/cgigas_roslin_rna.index \
+-o /home/shared/8TB_HDD_02/hannia/2.RNASeq/output/kallisto_01/{} \
+-t 40 \
+--single -l 100 -s 10 /home/shared/8TB_HDD_02/hannia/2.RNASeq/data/{}_L001_R1_001.fastq.gz
+
+#line 69 Finds all .fastq.gz files in the ../data/ folder.
+#line 70: Extracts just the sample name by removing the suffix _L001_R1_001.fastq.gz.
+#So a file like SAMPLE1_L001_R1_001.fastq.gz becomes SAMPLE1.
+#line 70: xargs -I{}For each sample name (like SAMPLE1), runs the Kallisto quantification command.
+#line 71: 
+```
+```{bash}
+#erro says i need to use R, but it did download stuff
+cd /home/shared/8TB_HDD_02/hannia/2.RNASeq
+perl /home/shared/trinityrnaseq-v2.12.0/util/abundance_estimates_to_matrix.pl \
+--est_method kallisto \
+    --gene_trans_map none \
+    --out_prefix ../2.RNASeq/output/kallisto_01 \
+    --name_sample_by_basedir \
+    ../2.RNASeq/output/kallisto_01/D54_S145/abundance.tsv \
+    ../2.RNASeq/output/kallisto_01/D56_S136/abundance.tsv \
+    ../2.RNASeq/output/kallisto_01/D58_S144/abundance.tsv \
+    ../2.RNASeq/output/kallisto_01/M45_S140/abundance.tsv \
+    ../2.RNASeq/output/kallisto_01/M48_S137/abundance.tsv \
+   ../2.RNASeq/output/kallisto_01/M89_S138/abundance.tsv \
+   ../2.RNASeq/output/kallisto_01/D55_S146/abundance.tsv \
+   ../2.RNASeq/output/kallisto_01/D57_S143/abundance.tsv \
+    ../2.RNASeq/output/kallisto_01/D59_S142/abundance.tsv \
+    ../2.RNASeq/output/kallisto_01/M46_S141/abundance.tsv \
+  ../2.RNASeq/output/kallisto_01/M49_S139/abundance.tsv \
+    ../2.RNASeq/output/kallisto_01/M90_S147/abundance.tsv \
+    ../2.RNASeq/output/kallisto_01/N48_S194/abundance.tsv \
+   ../2.RNASeq/output/kallisto_01/N50_S187/abundance.tsv \
+    ../2.RNASeq/output/kallisto_01/N52_S184/abundance.tsv \
+    ../2.RNASeq/output/kallisto_01/N54_S193/abundance.tsv \
+    ../2.RNASeq/output/kallisto_01/N56_S192/abundance.tsv \
+    ../2.RNASeq/output/kallisto_01/N58_S195/abundance.tsv \
+    ../2.RNASeq/output/kallisto_01/N49_S185/abundance.tsv \
+    ../2.RNASeq/output/kallisto_01/N51_S186/abundance.tsv \
+    ../2.RNASeq/output/kallisto_01/N53_S188/abundance.tsv \
+    ../2.RNASeq/output/kallisto_01/N55_S190/abundance.tsv \
+    ../2.RNASeq/output/kallisto_01/N57_S191/abundance.tsv \
+    ../2.RNASeq/output/kallisto_01/N59_S189/abundance.tsv
+```
+
+```{bash}
+find /home/shared -name abundance_estimates_to_matrix.pl 2>/dev/null
+#seeing if this is installed 
+```
+Running DESeq2
+This code performs differential expression analysis to identify differentially expressed genes (DEGs) between a control condition and a desiccated condition.
+
+```{r}
+install.packages("DESeq2") #might not have installed due to version of R 
+install.packages("tidyverse")
+install.packages("pheatmap")
+install.packages("RColorBrewer")
+install.packages("data.table")
+```
+
+```{r}
+library(DESeq2) #cant load cant download, line 142 fixing this 
+library(tidyverse)
+library(pheatmap)
+library(RColorBrewer)
+library(data.table)
+```
+```{r} #this package says if R is up2date 
+install.packages("installr")
+library(installr)
+check.for.updates.R()
+```
+```{r}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("DESeq2")
+```
+Read in count matrix- what is count matrix? countmatrix is a transcript-level expression matrix (from Kallisto), where:
+Each row = one isoform (transcript).
+Each column = one sample.
+Each cell = how many reads were mapped to that isoform in that sample.
+```{r}
+#setwd("/home/shared/8TB_HDD_02/hannia/2.RNASeq") 
+#library("DESeq2")
+countmatrix <- read.delim("../2.RNASeq/output/kallisto_01.isoform.counts.matrix", header = TRUE, sep = '\t')
+rownames(countmatrix) <- countmatrix$X
+countmatrix <- countmatrix[,-1]
+head(countmatrix)
+```
+result: 2 lines 
+D54_S145 D56_S136 D58_S144 M45_S140 M48_S137 M89_S138 D55_S146 D57_S143 D59_S142 M46_S141 M49_S139 M90_S147
+XM_034472528.1  0.00000   0.0000  0.00000  0.00000  0.00000  1.00000    0.000  0.00000  0.00000   0.0000  0.00000   0.0000
+XM_034461546.1  5.50031  13.0531  6.90814 11.05400 13.00000  5.04393   11.904  9.63401 20.88880  20.0601 10.75450  12.3664
+
+Round integers up to whole numbers for further analysis:
+```{r}
+countmatrix <- round(countmatrix, 0)
+str(countmatrix) #like summary()
+```
+Get DEGs based on Desication. Moisture removed from treatment (?)
+
+You're telling DESeq2:
+"Here's my count data. Here are the sample conditions (control/desicated). I want to analyze differences in expression based on condition."
+
+```{r}
+deseq2.colData <- data.frame(condition=factor(c(rep("control", 12), rep("desicated", 12))), 
+                             type=factor(rep("single-read", 24)))
+rownames(deseq2.colData) <- colnames(data)
+deseq2.dds <- DESeqDataSetFromMatrix(countData = countmatrix,
+                                     colData = deseq2.colData, 
+                                     design = ~ condition)
+```
+
+```{r}
+deseq2.dds <- DESeq(deseq2.dds) #taking deseq data set (deseq2.dds) and runs DESeq-> this creates the desired analysis to get the table 
+deseq2.res <- results(deseq2.dds) 
+deseq2.res <- deseq2.res[order(rownames(deseq2.res)), ] #re-ordering alphabetically by row name 
+head(deseq2.res)
+```
+
+```{r}
+# Count number of hits with adjusted p-value less then 0.05
+dim(deseq2.res[!is.na(deseq2.res$padj) & deseq2.res$padj <= 0.05, ])
+```
+
+You’re visualizing how gene expression changes due to desiccation, where:
+
+Gray dots are all genes,
+
+Red dots are significantly differentially expressed (FDR ≤ 0.05),
+
+Blue lines help you see genes that change more than 2-fold.
+```{r}
+tmp <- deseq2.res
+# The main plot
+plot(tmp$baseMean, tmp$log2FoldChange, pch=20, cex=0.45, ylim=c(-3, 3), log="x", col="darkgray",
+     main="DEG Dessication  (pval <= 0.05)",
+     xlab="mean of normalized counts",
+     ylab="Log2 Fold Change")
+# Getting the significant points and plotting them again so they're a different color
+tmp.sig <- deseq2.res[!is.na(deseq2.res$padj) & deseq2.res$padj <= 0.05, ]
+points(tmp.sig$baseMean, tmp.sig$log2FoldChange, pch=20, cex=0.45, col="red")
+# 2 FC lines
+abline(h=c(-1,1), col="blue")
+```
+
+```{r}
+#getting table
+#since setwd() in 2.RNASeq folder, this is your relative path "output/DEGlist.tab 
+write.table(tmp.sig, "output/DEGlist.tab", row.names = T) 
+``
+#completed assignment 
