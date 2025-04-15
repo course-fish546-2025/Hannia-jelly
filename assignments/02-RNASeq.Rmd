@@ -222,9 +222,3 @@ write.table(tmp.sig, "output/DEGlist.tab", row.names = T)
 ``
 #completed assignment 
 
-
-
-
-
-
-

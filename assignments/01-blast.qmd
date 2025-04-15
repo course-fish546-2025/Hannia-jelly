@@ -4,13 +4,14 @@ format: html
 editor: visual
 ---
 
-Assignment 1 ? 4/1/25
+Assignment 1
 
 ```{bash}
 cd ..
 git config --global user.email "hannia@uw.edu"
 git config --global user.name "Hannia"
 ```
+
 
 i am going to download blast and use it to compare unknown sequences.
 
@@ -26,3 +27,149 @@ tar -xf ncbi-blast-2.16.0+-x64-linux.tar.gz
 /home/jovyan/applications/ncbi-blast-2.16.0+/bin/blastx -h
 
 ```
+
+I am going to download blast and use it to compare unknown sequences.
+
+```{bash}
+cd /home/jovyan/applications 
+#setting working directory 
+curl -O https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.16.0+-x64-linux.tar.gz
+#curl = client URL, used to transfer data from a server 
+tar -xf ncbi-blast-2.16.0+-x64-linux.tar.gz
+#tar= tape archive, used to create, view, and extract compressed or uncompressed archived files.
+
+```
+
+```{bash}
+/home/jovyan/applications/ncbi-blast-2.16.0+/bin/blastx -help 
+
+#-help tells you what this is/does
+pwd
+```
+
+```         
+```
+
+```         
+```
+
+4/3/25 Day 2: continue and finish Blast assignmment
+
+#make blast database
+
+i am using swiss-prot uni = prot
+
+```{bash}
+cd ../data
+curl -O https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz
+```
+
+```{bash}
+cd /home/jovyan
+pwd
+
+```
+
+```{bash}
+pwd
+cd /home/jovyan/blastdb
+pwd
+#had to delete blastdb folder, for some reason, said no such file or directory 
+```
+
+```{bash}
+curl -O https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz
+#curl -O saves output to a file 
+
+mv uniprot_sprot.fasta.gz uniprot_sprot_r2025_01.fasta.gz
+#mv used to move or rename files and directories 
+
+gunzip -k uniprot_sprot_r2025_01.fasta.gz
+#gunzip -k decompresses file but preserves original .gz file. 
+ls 
+#lists files and directories in current directory, when run ls w/out argument, it displays names of files and folders in current directory 
+```
+
+```         
+```
+
+```{bash}
+#above is where error begins?
+#above made fasta file 
+#checking to see first lines of file 
+head /home/jovyan/blastdb/uniprot*
+#cant see the head of file, says does not exist
+```
+
+```{bash}
+/home/jovyan/applications/ncbi-blast-2.16.0+/bin/makeblastdb \
+-in ../../blastdb/uniprot_sprot_r2023_01.fasta \
+-dbtype prot \
+-out /home/jovyan/blastdb/uniprot_sprot_r2023_01
+
+#####chunk below is same, just trying to see if line 92 makes a diff compared to line 103
+pwd
+##changing data back to 2023 bc that is the file that Robert installed 
+#deleted comments w # because chatgpt said not to have any spaces after \ 
+
+```
+
+```{bash}
+ls -l /home/jovyan/applications/ncbi-blast-2.16.0+/bin/makeblastdb
+
+#ls -l is checking to see if this code is directory or "executable file" 
+
+#-input file for datbase creation. -in tells makeblastdb which sequence file to use as source for database. 
+#dbtype prot = protein sequence as opposed to nucleotides. 
+
+#-out species output location and base name for BLAST database files that will be created. name is "uniprot_sprot_r..."
+
+```
+
+Getting query sequence
+
+```{bash}
+#copying Steven's code from zoom 
+#currently in "assignments" tab so can put data in assignments/data folder
+
+curl https://eagle.fish.washington.edu/cnidarian/Ab_4denovo_CLC6_a.fa \
+-k \
+> data/Ab_4denovo_CLC6_a.fa
+
+```
+
+```{bash}
+
+head data/Ab_4denovo_CLC6_a.fa
+
+```
+
+```{bash}
+echo "How many sequences are there?"
+grep -c ">" data/Ab_4denovo_CLC6_a.fa
+```
+
+```{bash}
+#running blast 
+
+/home/jovyan/applications/ncbi-blast-2.16.0+/bin/blastx \
+-query data/Ab_4denovo_CLC6_a.fa \
+-db ../../blastdb/uniprot_sprot_r2023_01 \
+-out output/Ab_4-uniprot_blastx.tab \
+-evalue 1E-20 \
+-num_threads 1 \
+-max_target_seqs 1 \
+-outfmt 6
+
+```
+```{bash}
+
+head -2 output/Ab_4-uniprot_blastx.tab
+#-2 part says you only want to see first two lines of file 
+wc -l output/Ab_4-uniprot_blastx.tab
+#wc = word count, -1 = counts number of files 
+
+```
+
+
+
