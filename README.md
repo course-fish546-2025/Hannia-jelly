@@ -7,4 +7,3 @@ My end goal for the class is to complete a differential gene analysis of sea cuc
 week 02 to as general guidence and seek help as I need it. The end product
 will have a multitude of figures that display the results. 
 
-
