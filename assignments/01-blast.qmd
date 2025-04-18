@@ -44,7 +44,7 @@ pwd
 i am using swiss-prot uni = prot
 
 ```{bash}
-cd ../data
+cd /home/jovyan/applications/data
 curl -O https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz
 ```
 
@@ -84,6 +84,8 @@ ls
 head /home/jovyan/blastdb/uniprot*
 #cant see the head of file, says does not exist
 ```
+
+
 
 ```{bash}
 /home/jovyan/applications/ncbi-blast-2.16.0+/bin/makeblastdb \
@@ -155,4 +157,9 @@ wc -l output/Ab_4-uniprot_blastx.tab
 
 ```
 
+```{bash}
+cd /home/jovyan/blastdb
+find . -type f -size +50M
+
+```
 

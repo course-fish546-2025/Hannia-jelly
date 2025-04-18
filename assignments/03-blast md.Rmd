@@ -1,0 +1,110 @@
+---
+title: "03-Blast md"
+output: html_document
+date: "2025-04-17"
+output: 
+  html_document:
+    theme: readable
+    toc: true
+    toc_float: true
+    number_sections: true
+    code_folding: show
+---
+
+**HOW TO COMPLETE BLAST**
+
+1. Downloading latest NCBI software .gz file from https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/
+
+```{r, engine='bash'}
+
+cd /home/jovyan/applications #setting directory 
+curl -O https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.16.0+-x64-linux.tar.gz #uploading NCBI software to directory 
+tar -xf ncbi-blast-2.16.0+-x64-linux.tar.gz #extract files from .tar archive 
+
+```
+**Check to see if the software downloaded in the "applications" folder.**
+```{r, engine='bash'}
+ls /home/jovyan/applications/ncbi-blast-2.16.0+-x64-linux.tar.gz
+```
+**MAKING THE DATABASE**
+2. Make a blast database. Download latest Swiss-Prot protein sequences.
+```{r, engine='bash'}
+curl -O https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz
+#curl -O saves output to a file. This file is an unzipped folder. 
+
+mv uniprot_sprot.fasta.gz uniprot_sprot_r2023_01.fasta.gz
+#mv used to move or rename files and directories 
+#accidentally renamed 2023 instead of 2025 
+
+gunzip -k uniprot_sprot_r2025_01.fasta.gz
+#gunzip -k decompresses file but preserves original .gz file. 
+ls 
+#lists files and directories in current directory, when run ls w/out argument, it displays names of files and folders in current directory 
+```
+3. Uniprot files downloaded in blastdb folder. Use 'head' to see file. 
+```{r, engine='bash'}
+#checking to see first lines of file 
+cd /home/jovyan/blastdb
+head /home/jovyan/blastdb/uniprot* 
+```
+4. This actually creates the BLAST database in the blastdb folder. 
+```{r, engine='bash'}
+/home/jovyan/applications/ncbi-blast-2.16.0+/bin/makeblastdb \
+-in ../../blastdb/uniprot_sprot_r2023_01.fasta \
+-dbtype prot \
+-out /home/jovyan/blastdb/uniprot_sprot_r2023_01
+
+```
+
+**GETTING QUERY SEQUENCE**
+5. Download the FASTA file "Ab_4denovo_CLC6_a.fa" 
+```{r, engine='bash'}
+cd /home/jovyan/applications/data
+curl https://eagle.fish.washington.edu/cnidarian/Ab_4denovo_CLC6_a.fa \
+-k \
+> /home/jovyan/applications/data/Ab_4denovo_CLC6_a.fa 
+```
+**View head of Ab_4denovo**
+```{r, engine='bash'}
+head /home/jovyan/applications/data/Ab_4denovo_CLC6_a.fa
+
+```
+**insert note** 
+```{r, engine='bash'}
+echo "How many sequences are there?"
+grep -c ">" /home/jovyan/applications/data/Ab_4denovo_CLC6_a.fa
+
+#grep -c Counts the number of lines that start with > — which correspond to sequence headers in a FASTA file. This gives you the number of sequences in the file.
+```
+**RUN BLAST** 
+
+```{bash}
+pwd
+cd /home/jovyan/applications
+pwd 
+```
+
+Getting an error here 
+Warning: [blastx] Examining 5 or more matches is recommended
+BLAST Database error: Database memory map file error
+```{r, engine='bash'}
+cd /home/jovyan/applications
+/home/jovyan/applications/ncbi-blast-2.16.0+/bin/blastx \
+-query /home/jovyan/applications/data/Ab_4denovo_CLC6_a.fa \
+-db ../../blastdb/uniprot_sprot_r2023_01 \
+-out output/Ab_4-uniprot_blastx.tab \
+-evalue 1E-20 \
+-num_threads 1 \
+-max_target_seqs 1 \
+-outfmt 6
+
+```
+```{bash}
+
+head -2 output/Ab_4-uniprot_blastx.tab
+#-2 part says you only want to see first two lines of file 
+wc -l output/Ab_4-uniprot_blastx.tab
+#wc = word count, -1 = counts number of files 
+
+```
+
