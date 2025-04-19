@@ -11,9 +11,28 @@ output:
     code_folding: show
 ---
 
-**HOW TO COMPLETE BLAST**
+```{r, engine='bash'}
+#**Introduction**
 
-1. Downloading latest NCBI software .gz file from https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/
+Using the instructions on https://sr320.github.io/course-fish546-2025/assignments/01-blast.html, this document will show the different components required to complete a BLAST protein analysis. There are X sections, with the final product displaying tables of the results. 
+
+##Links used: 
+*NCBI software: https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ 
+*Swiss Prot protein sequences .gz file: https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz
+*Query sequence FASTA file: https://eagle.fish.washington.edu/cnidarian/Ab_4denovo_CLC6_a.fa 
+
+
+The query sequences are being compared to the UniProt Swiss-Prot protein database that is created in section 2. 
+
+##Libraries used: 
+*library(tidyverse)
+*library("kableExtra")
+
+```
+
+**DOWNLOADING NCBI SOFTWARE**
+
+#1. Downloading latest NCBI software .gz file from https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/
 
 ```{r, engine='bash'}
 
@@ -22,12 +41,13 @@ curl -O https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-
 tar -xf ncbi-blast-2.16.0+-x64-linux.tar.gz #extract files from .tar archive 
 
 ```
-**Check to see if the software downloaded in the "applications" folder.**
+##**Check to see if the software downloaded in the "applications" folder.**
 ```{r, engine='bash'}
 ls /home/jovyan/applications/ncbi-blast-2.16.0+-x64-linux.tar.gz
 ```
+
 **MAKING THE DATABASE**
-2. Make a blast database. Download latest Swiss-Prot protein sequences.
+#2. Make a blast database. Download latest Swiss-Prot protein sequences.
 ```{r, engine='bash'}
 curl -O https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz
 #curl -O saves output to a file. This file is an unzipped folder. 
@@ -41,13 +61,14 @@ gunzip -k uniprot_sprot_r2025_01.fasta.gz
 ls 
 #lists files and directories in current directory, when run ls w/out argument, it displays names of files and folders in current directory 
 ```
-3. Uniprot files downloaded in blastdb folder. Use 'head' to see file. 
+##Uniprot files downloaded in blastdb folder. Use 'head' to see file. 
 ```{r, engine='bash'}
 #checking to see first lines of file 
 cd /home/jovyan/blastdb
 head /home/jovyan/blastdb/uniprot* 
 ```
-4. This actually creates the BLAST database in the blastdb folder. 
+
+###This actually creates the BLAST database in the blastdb folder. 
 ```{r, engine='bash'}
 /home/jovyan/applications/ncbi-blast-2.16.0+/bin/makeblastdb \
 -in ../../blastdb/uniprot_sprot_r2023_01.fasta \
@@ -57,54 +78,126 @@ head /home/jovyan/blastdb/uniprot*
 ```
 
 **GETTING QUERY SEQUENCE**
-5. Download the FASTA file "Ab_4denovo_CLC6_a.fa" 
+#3. Download the FASTA file "Ab_4denovo_CLC6_a.fa" 
 ```{r, engine='bash'}
 cd /home/jovyan/applications/data
 curl https://eagle.fish.washington.edu/cnidarian/Ab_4denovo_CLC6_a.fa \
 -k \
 > /home/jovyan/applications/data/Ab_4denovo_CLC6_a.fa 
 ```
-**View head of Ab_4denovo**
+
+##**View head of Ab_4denovo**
 ```{r, engine='bash'}
 head /home/jovyan/applications/data/Ab_4denovo_CLC6_a.fa
 
 ```
-**insert note** 
+###**Checking more of the query sequences**
 ```{r, engine='bash'}
 echo "How many sequences are there?"
 grep -c ">" /home/jovyan/applications/data/Ab_4denovo_CLC6_a.fa
 
 #grep -c Counts the number of lines that start with > — which correspond to sequence headers in a FASTA file. This gives you the number of sequences in the file.
 ```
-**RUN BLAST** 
 
-```{bash}
-pwd
-cd /home/jovyan/applications
-pwd 
-```
+#4.**RUNNING BLAST**
 
-Getting an error here 
-Warning: [blastx] Examining 5 or more matches is recommended
-BLAST Database error: Database memory map file error
+*Translates nucleotide sequences in Ab_4denovo_CLC6_a.fa file in all six reading frames.
+*Comparing those translated proteins against the Swiss-Prot section of UniProt (uniprot_sprot_r2023_01).
+*Outputs top hits (1 per query) with very stringent matches (evalue 1E-20).
+*Produces output in tabular format saved to: output/Ab_4-uniprot_blastx.tab. 
+
+
 ```{r, engine='bash'}
-cd /home/jovyan/applications
 /home/jovyan/applications/ncbi-blast-2.16.0+/bin/blastx \
 -query /home/jovyan/applications/data/Ab_4denovo_CLC6_a.fa \
 -db ../../blastdb/uniprot_sprot_r2023_01 \
--out output/Ab_4-uniprot_blastx.tab \
+-out /home/jovyan/applications/output/Ab_4-uniprot_blastx.tab \
 -evalue 1E-20 \
 -num_threads 1 \
 -max_target_seqs 1 \
 -outfmt 6
-
 ```
-```{bash}
 
-head -2 output/Ab_4-uniprot_blastx.tab
+##Previewing the BLAST results.  
+```{r, engine='bash'}
+
+head -2 /home/jovyan/applications/output/Ab_4-uniprot_blastx.tab
 #-2 part says you only want to see first two lines of file 
-wc -l output/Ab_4-uniprot_blastx.tab
+#.tab = tab separated file w annotation data from UniProt's REST API. 
+wc -l /home/jovyan/applications/output/Ab_4-uniprot_blastx.tab
 #wc = word count, -1 = counts number of files 
 
 ```
+
+
+5. **CREATING TABLES**
+Joining blast table with annotation table
+-locate blast output table and locate blast annotation table
+
+#Replacing all pipe (|) characters with tabs (\). This will make further code easier. 
+```{r, engine='bash'}
+tr '|' '\t' < /home/jovyan/applications/output/Ab_4-uniprot_blastx.tab | head -2
+
+#tr '|' '\t'  Translates (replaces) all pipe (|) characters with tabs (\t) — useful for parsing when identifiers are delimited like sp|P12345|PROT_HUMAN. 
+#'< ... .tab'  Feeds in your BLAST output file as input to tr. 
+#'| head -2' Only shows the first 2 lines
+#replacing pipes with tabs makes it easier to extract the second column with tools like cut, awk, or pandas.
+```
+##Creating a reformatted table of Ab_4-uniprot_blastx.tab 
+```{bash}
+cd /home/jovyan/applications/output 
+tr '|' '\t' < ../output/Ab_4-uniprot_blastx.tab \
+> ../output/Ab_4-uniprot_blastx_sep.tab
+```
+
+```{bash}
+find . -type f -name "uniprot_table_r2023_01.tab"
+```
+
+DONT HAVE THESE FILES BELOW. Unsure why. 
+```{bash}
+head -2 /home/jovyan/applications/data/uniprot_table_r2023_01.tab #shows first 2 lines 
+wc -l /home/jovyan/applications/data/uniprot_table_r2023_01.tab #spits out lines in file.
+```
+
+**Downloading libraries to create tables**
+```{r, engine='r'}
+library(tidyverse)
+install.packages("kableExtra")
+library("kableExtra")
+```
+
+
+```{r, engine='r'}
+bltabl <- read.csv("/home/jovyan/applications/output/Ab_4-uniprot_blastx_sep.tab", sep = '\t', header = FALSE)
+
+bltabl
+```
+
+
+#UNSURE HOW TO MOVE FORWARD FROM HERE IN TERMS OF LINING MY CODE WITH THE ASSINGMENT
+##Not sure what table they want me to use. 
+```{r, engine='r'}
+kbl(
+head(
+  left_join(bltabl, spgo,  by = c("V3" = "Entry")) %>%
+  select(V1, V3, V13, Protein.names, Organism, Gene.Ontology..biological.process., Gene.Ontology.IDs) %>% mutate(V1 = str_replace_all(V1, 
+            pattern = "solid0078_20110412_FRAG_BC_WHITE_WHITE_F3_QV_SE_trimmed", replacement = "Ab"))
+)
+) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+```
+
+
+```{r}
+left_join(bltabl, spgo,  by = c("V3" = "Entry")) %>%
+  select(V1, V3, V13, Protein.names, Organism, Gene.Ontology..biological.process., Gene.Ontology.IDs) %>% mutate(V1 = str_replace_all(V1, 
+            pattern = "solid0078_20110412_FRAG_BC_WHITE_WHITE_F3_QV_SE_trimmed", replacement = "Ab")) %>%
+  write_delim("/home/jovyan/applications/output/blast_annot_go.tab", delim = '\t')
+
+```
+
+
+
+
 
