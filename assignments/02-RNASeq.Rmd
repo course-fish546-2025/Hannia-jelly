@@ -17,6 +17,7 @@ pwd
 
 # put this to navigate kallisto /home/shared/kallisto/kallisto 
 ```
+
 Downloading reference 
 ```{bash}
 cd /home/shared/8TB_HDD_02/hannia/2.RNASeq/data
@@ -24,16 +25,20 @@ curl --insecure -O https://gannet.fish.washington.edu/seashell/bu-github/nb-2023
 
 #grabbing fasta file of pacific oyster genes. 
 #-- insecure ignores the fact that gannet does not have security certificate to auntheticate. Not reccomended but we know server. 
-
 ```
-Line 30-indexing file rna.fna while renmaing as "cgigas_roslin_rna.index"
+
+
+
+Line 30-indexing file rna.fna while renaming as "cgigas_roslin_rna.index"
 ```{bash}
 /home/shared/kallisto/kallisto \
 index -i \
 /home/shared/8TB_HDD_02/hannia/2.RNASeq/data/cgigas_roslin_rna.index \
 /home/shared/8TB_HDD_02/hannia/2.RNASeq/data/rna.fna
-
 ```
+
+
+
 Line 39-downloading several data files at once listed on URL using wget
 ```{bash}
 cd /home/shared/8TB_HDD_02/hannia/2.RNASeq/data 
@@ -42,6 +47,7 @@ wget --recursive --no-parent --no-directories \
 --accept '*.fastq.gz' \
 https://gannet.fish.washington.edu/seashell/bu-github/nb-2023/Cgigas/data/nopp/
 ```
+
 Line 46- making new folder in "output" folder 
 ```{bash}
 cd /home/shared/8TB_HDD_02/hannia/2.RNASeq
@@ -49,7 +55,7 @@ pwd
 mkdir /home/shared/8TB_HDD_02/hannia/2.RNASeq/output/kallisto_01 
 #mkdir makes new folder called kallisto01 up one directory level 
 
-#password: scallopscallop 
+
 
 ```
 
@@ -63,6 +69,8 @@ quant -i /home/shared/8TB_HDD_02/hannia/2.RNASeq/data/cgigas_roslin_rna.index \
 --single -l 100 -s 10 /home/shared/8TB_HDD_02/hannia/2.RNASeq/data/{}_L001_R1_001.fastq.gz
 
 ```
+
+
 
 ```{bash}
 #mkdir /home/shared/8TB_HDD_02/hannia/2.RNASeq/output/kallisto_01 #mkdir=make new output directory, already did this 
@@ -79,6 +87,8 @@ quant -i /home/shared/8TB_HDD_02/hannia/2.RNASeq/data/cgigas_roslin_rna.index \
 #line 70: xargs -I{}For each sample name (like SAMPLE1), runs the Kallisto quantification command.
 #line 71: 
 ```
+
+
 ```{bash}
 #erro says i need to use R, but it did download stuff
 cd /home/shared/8TB_HDD_02/hannia/2.RNASeq
@@ -113,6 +123,8 @@ perl /home/shared/trinityrnaseq-v2.12.0/util/abundance_estimates_to_matrix.pl \
     ../2.RNASeq/output/kallisto_01/N59_S189/abundance.tsv
 ```
 
+
+
 ```{bash}
 find /home/shared -name abundance_estimates_to_matrix.pl 2>/dev/null
 #seeing if this is installed 
@@ -140,6 +152,7 @@ install.packages("installr")
 library(installr)
 check.for.updates.R()
 ```
+
 ```{r}
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
