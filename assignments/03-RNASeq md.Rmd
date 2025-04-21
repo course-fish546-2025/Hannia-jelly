@@ -12,8 +12,8 @@ theme: readable
     code_download: true
 ---
 
-**HOW TO COMPLETE RNASeq Analysis** 
-**PART I. Downloading reference genes & installing Kallisto.** 
+**HOW TO COMPLETE RNASeq Analysis** **PART I. Downloading reference genes & installing Kallisto.**
+
 ```{r, engine='bash'}
 #**Introduction**
 
@@ -33,21 +33,17 @@ this document will show the steps required to complete and differential gene ana
 *BiocManager
 ```
 
-
 **1. Downloading reference**
+
 ```{r, engine='bash'}
 cd /home/shared/8TB_HDD_02/hannia/2.RNASeq/data
 curl --insecure -O https://gannet.fish.washington.edu/seashell/bu-github/nb-2023/Cgigas/data/rna.fna
-
+head -n 10 <(curl -s https://gannet.fish.washington.edu/seashell/bu-github/nb-2023/Cgigas/data/rna.fna)
 #grabbing fasta file of pacific oyster genes. 
 #-- insecure ignores the fact that gannet does not have security certificate to auntheticate. Not reccomended but we know server. 
 ```
 
-
-
-
-**2. Running Kallisto index command. Indexing file rna.fna while renaming as "cgigas_roslin_rna.index.*"**
-**Pre-processing transcript sequences into format Kallisto can easily read.** 
+**2. Running Kallisto index command.** *Indexing file rna.fna while renaming as "cgigas_roslin_rna.index.* Pre-processing transcript sequences into format Kallisto can easily read.
 
 ```{r, engine='bash'}
 /home/shared/kallisto/kallisto \
@@ -56,8 +52,8 @@ index -i \
 /home/shared/8TB_HDD_02/hannia/2.RNASeq/data/rna.fna
 ```
 
-
 **3.Downloading several data files at once listed on URL using wget.**
+
 ```{r, engine='bash'}
 cd /home/shared/8TB_HDD_02/hannia/2.RNASeq/data 
 wget --recursive --no-parent --no-directories \
@@ -68,6 +64,7 @@ https://gannet.fish.washington.edu/seashell/bu-github/nb-2023/Cgigas/data/nopp/
 ```
 
 **4. Making new folder in "output" folder.**
+
 ```{r, engine='bash'}
 cd /home/shared/8TB_HDD_02/hannia/2.RNASeq
 pwd
@@ -76,6 +73,7 @@ mkdir /home/shared/8TB_HDD_02/hannia/2.RNASeq/output/kallisto_01
 ```
 
 **5.Creating sub directory.**
+
 ```{r, engine='bash'}
 find /home/shared/8TB_HDD_02/hannia/2.RNASeq/data/*fastq.gz \
 | xargs basename -s _L001_R1_001.fastq.gz | xargs -I{} /home/shared/kallisto/kallisto \
@@ -86,6 +84,7 @@ quant -i /home/shared/8TB_HDD_02/hannia/2.RNASeq/data/cgigas_roslin_rna.index \
 ```
 
 **6.This command is a bash one-liner that runs kallisto quantification in a loop over multiple single-end RNA-seq .fastq.gz files.**
+
 ```{r, engine='bash'}
 find /home/shared/8TB_HDD_02/hannia/2.RNASeq/data/*fastq.gz \
 | xargs basename -s _L001_R1_001.fastq.gz | xargs -I{} /home/shared/kallisto/kallisto \
@@ -95,8 +94,8 @@ quant -i /home/shared/8TB_HDD_02/hannia/2.RNASeq/data/cgigas_roslin_rna.index \
 --single -l 100 -s 10 /home/shared/8TB_HDD_02/hannia/2.RNASeq/data/{}_L001_R1_001.fastq.gz
 ```
 
-
 **7.Creating abundance estimates to gene expression matrix.**
+
 ```{r, engine='bash'}
 perl /home/shared/trinityrnaseq-v2.12.0/util/abundance_estimates_to_matrix.pl \
 --est_method kallisto \
@@ -129,47 +128,61 @@ perl /home/shared/trinityrnaseq-v2.12.0/util/abundance_estimates_to_matrix.pl \
     ../2.RNASeq/output/kallisto_01/N59_S189/abundance.tsv
 ```
 
-
 **PART II. RUNNING DESeq2**
-**8. Reading in count matrix**
-```{r, engine='bash'}
+
+**8. Reading in count matrix** \*Switching to R language and displaying first few rows.
+
+```{r}
+install.packages("knitr")
+library(knitr)
+```
+
+```{r, engine='r'}
 countmatrix <- read.delim("../2.RNASeq/output/kallisto_01.isoform.counts.matrix", header = TRUE, sep = '\t')
 rownames(countmatrix) <- countmatrix$X
 countmatrix <- countmatrix[,-1]
 head(countmatrix)
+
 ```
 
 **9. Round integers up to hole numbers for further analysis.**
-```{r, engine='bash'}
+
+```{r, engine='r'}
 countmatrix <- round(countmatrix, 0)
 str(countmatrix) #like summary()
 ```
 
 **10.Getting DEG based on Desication.**
-```{r, engine='bash'}
+
+```{r, engine='r'}
 deseq2.colData <- data.frame(condition=factor(c(rep("control", 12), rep("desicated", 12))), 
                              type=factor(rep("single-read", 24)))
 rownames(deseq2.colData) <- colnames(data)
 deseq2.dds <- DESeqDataSetFromMatrix(countData = countmatrix,
                                      colData = deseq2.colData, 
                                      design = ~ condition)
+kable(head(deseq2.res), digits = 3, caption = "Top 6 Differential Expression Results")
 ```
 
-```{r, engine='bash'}
+**11. DESeq data table.**
+
+```{r, engine='r'}
 deseq2.dds <- DESeq(deseq2.dds) #taking deseq data set (deseq2.dds) and runs DESeq-> this creates the desired analysis to get the table 
 deseq2.res <- results(deseq2.dds) 
 deseq2.res <- deseq2.res[order(rownames(deseq2.res)), ] #re-ordering alphabetically by row name 
 head(deseq2.res)
 ```
 
+\*Making adjustments.
 
-```{r, engine='bash'}
+```{r, engine='r'}
 # Count number of hits with adjusted p-value less then 0.05
 dim(deseq2.res[!is.na(deseq2.res$padj) & deseq2.res$padj <= 0.05, ])
 ```
 
+**DESeq RESULTS**
 
-```{r, engine='bash'}
+```{r, engine='r'}
 tmp <- deseq2.res
 # The main plot
 plot(tmp$baseMean, tmp$log2FoldChange, pch=20, cex=0.45, ylim=c(-3, 3), log="x", col="darkgray",
@@ -184,8 +197,27 @@ abline(h=c(-1,1), col="blue")
 
 ```
 
-```{r, engine='bash'}
-write.table(tmp.sig, "output/DEGlist.tab", row.names = T) 
+#Creating heat map summary of data.
+
+#Top 50 most deferentially expressed genes. This heat map shows the relative expressions levels of the top genes.
+
+```{r heatmap, eval=TRUE}
+library(DESeq2)
+library(pheatmap)
+
+# Select top 50 differentially expressed genes
+res <- results(deseq2.dds)
+res_ordered <- res[order(res$padj), ]
+top_genes <- row.names(res_ordered)[1:50]
+
+# Extract counts and normalize
+counts <- counts(deseq2.dds, normalized = TRUE)
+counts_top <- counts[top_genes, ]
+
+# Log-transform counts
+log_counts_top <- log2(counts_top + 1)
+
+# Generate heatmap
+pheatmap(log_counts_top, scale = "row")
+
 ```
-
-
