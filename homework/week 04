@@ -1,0 +1,21 @@
+Week 04 Questions
+
+What is tmux and how does this relate to our current way of working on raven?
+
+tmux stands for terminal multiplexer and it is a command that prevents hangups from interrupting applications that 
+take a lot of time to run. So even if network connection is lost, the application will not stop running. 
+
+What is ssh and what would the code be you would type if you were going to ssh into raven?
+ssh stands for 'secure shell'. 
+
+Code: ssh hannia@klone.hyak.uw.edu. 
+
+What has been the most challenging part of your research project? Are you happy with your organization skills? If not what could be improved?
+
+The most challenging part is having to navigate the data I have. Although there are instructions on how to complete some stuff like the data QC through  FastQC, I have had to do my own research to try to understand data that I did not collect. I think
+it would be easier to move through the project if I had collected the data on my own. I think my organization skills are okay. Since it is the first time I am working through a project like this, I am unsure of how to set up my repository to be more organized. 
+
+For last weeks assignment what did you appreciate the most about knitting documents?
+I enjoyed the interactive data tables. They were not super difficult to do, but the results were pleasant to see. 
+
+
