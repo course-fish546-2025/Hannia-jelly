@@ -1,0 +1,20 @@
+What are SAM/BAM files? What is the difference between to the two?
+
+SAM=Sequence Alignment Map and BAM=Binary alignment map. These files are used to store alignment reads between an obtained sequence and the reference genes/genome. They are different in their file formatting. SAM files are in plain text and BAM files are not. A BAM file is a compressed version of the SAM file. BAM files would be best for large-scale sequencing due to their smaller file size. SAM files are easy to read and can be done in the command line while BAM files require software in order to read and manipulate. Additionally, SAM files are slower to process due to their size and vice versa for BAM files. 
+
+samtoolsis a popular program for working with alignment data. What are three common tasks that this software is used for?
+
+'samtools view' is used to convert between SAM and BAM formats, filter, and extract data from the files. 
+'samtools sort' organizes aligntments by chromosomal coordinates. 
+'samtools merge' merges mutiple BAM files into one BAM file. 
+ Integrated Genomics Viewer (IGV) is a software that can be used to do more thorough visualization. 
+
+
+Why might you want to visualize alignment data and what are two program that can be used for this?
+
+Visualizing data can help understand the results of the alignment to the reference genome. 
+'Sam tools tview' can be used to vizualise data. This is good for quick inspection of a few alignments.
+
+
+Describe what VCF file is?
+VCF stands for variant call format. It is a text file that is obtained from 'samtools mpileup' that has information on variants, SNPS, and indels of the alignment results. 
