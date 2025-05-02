@@ -1,0 +1,63 @@
+---
+title: "05-Alignment data"
+author: "Hannia Larino"
+date: "2025-04-29"
+output: html_document
+---
+Purpose: Create and inspect and alignment files. Including visualizing and capturing “outside” graphics. Publish notebook in rpubs and provide link at top of code.
+
+**Task 1**: Looking at alignment files
+*Downloading alignment data 
+**Reminder - these are BIG files, be sure to IGNORE on commit.**
+
+
+```{r, engine='bash'}
+
+cd /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/data
+curl -O https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/120321-cvBS/19F_R1_val_1_bismark_bt2_pe.deduplicated.sorted.bam
+curl -O https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/120321-cvBS/19F_R1_val_1_bismark_bt2_pe.deduplicated.sorted.bam.bai
+```
+
+```{r, engine='bash'}         
+cd /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/data
+curl -O https://gannet.fish.washington.edu/seashell/bu-mox/data/Cvirg-genome/GCF_002022765.2_C_virginica-3.0_genomic.fa
+curl -O https://gannet.fish.washington.edu/seashell/bu-mox/data/Cvirg-genome/GCF_002022765.2_C_virginica-3.0_genomic.fa.fai
+```
+
+
+**Visualize with tview**
+*Run the following below in Terminal as is interactive
+
+```{r, engine='bash'}
+/home/shared/samtools-1.12/samtools tview \
+/home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/data/19F_R1_val_1_bismark_bt2_pe.deduplicated.sorted.bam \
+/home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/data/GCF_002022765.2_C_virginica-3.0_genomic.fa
+```
+
+
+
+*INSER IMAGE OF TERMINAL**
+
+```{r}
+knitr::include_graphics("/home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/tview results.png")
+```
+
+
+**TASK 2**
+
+```{r, engine='bash'}
+cd /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/data
+curl -O https://owl.fish.washington.edu/nightingales/C_gigas/F143n08_R2_001.fastq.gz
+curl -O https://owl.fish.washington.edu/nightingales/C_gigas/F143n08_R1_001.fastq.gz
+```
+
+```{r, engine='bash'}
+cd /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/data
+curl -O https://gannet.fish.washington.edu/panopea/Cg-roslin/cgigas_uk_roslin_v1_genomic-mito.fa
+curl -O https://gannet.fish.washington.edu/panopea/Cg-roslin/cgigas_uk_roslin_v1_genomic-mito.fa.fai
+curl -O https://gannet.fish.washington.edu/panopea/Cg-roslin/GCF_902806645.1_cgigas_uk_roslin_v1_genomic-mito.gtf
+```
+
+
+
+
