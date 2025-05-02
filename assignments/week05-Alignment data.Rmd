@@ -44,6 +44,8 @@ knitr::include_graphics("/home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments
 
 
 **TASK 2**
+* 2 chunks below: Aligning WGS data and visualizing in IGV
+
 
 ```{r, engine='bash'}
 cd /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/data
@@ -57,7 +59,78 @@ curl -O https://gannet.fish.washington.edu/panopea/Cg-roslin/cgigas_uk_roslin_v1
 curl -O https://gannet.fish.washington.edu/panopea/Cg-roslin/cgigas_uk_roslin_v1_genomic-mito.fa.fai
 curl -O https://gannet.fish.washington.edu/panopea/Cg-roslin/GCF_902806645.1_cgigas_uk_roslin_v1_genomic-mito.gtf
 ```
+**Alignment**
 
+```{r, engine='bash'}
+/home/shared/hisat2-2.2.1/hisat2-build \
+-f /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/data/cgigas_uk_roslin_v1_genomic-mito.fa \
+/home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/cgigas_uk_roslin_v1_genomic-mito.index
+```
+
+```{r, engine='bash'}
+/home/shared/hisat2-2.2.1/hisat2 \
+-x /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/cgigas_uk_roslin_v1_genomic-mito.index \
+-p 4 \
+-1 /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/data/F143n08_R1_001.fastq.gz \
+-2 /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/data/F143n08_R2_001.fastq.gz \
+-S /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/F143_cgigas.sam
+```
+
+
+```{bash}
+tail -1 /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/F143_cgigas.sam
+```
+
+```{r, engine='bash'}
+# Convert SAM to BAM, using 4 additional threads
+/home/shared/samtools-1.12/samtools view -@ 4 -bS \
+/home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/F143_cgigas.sam > /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/F143_cgigas.bam
+```
+
+```{r, engine='bash'}
+# Sort the BAM file, using 4 additional threads
+/home/shared/samtools-1.12/samtools sort -@ 4 \
+/home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/F143_cgigas.bam -o /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/F143_cgigas_sorted.bam
+
+# Index the sorted BAM file (multi-threading is not applicable to this operation)
+/home/shared/samtools-1.12/samtools index \
+/home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/F143_cgigas_sorted.bam
+```
+
+
+
+
+```{r, engine='bash'}
+/home/shared/bcftools-1.14/bcftools mpileup --threads 4 --no-BAQ \
+--fasta-ref /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/data/cgigas_uk_roslin_v1_genomic-mito.fa \
+/home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/F143_cgigas_sorted.bam > /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/F143_mpileup_output.txt
+```
+
+```{r, engine='bash'}
+tail /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/F143_mpileup_output.txt
+```
+
+```{r, engine='bash'}
+cat /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/F143_mpileup_output.txt \
+| /home/shared/bcftools-1.14/bcftools call -mv -Oz \
+> /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/F143_mpile.vcf.gz
+```
+
+
+```{r, engine='bash'}
+zgrep "^##" -v /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/F143_mpile.vcf.gz | \
+awk 'BEGIN{OFS="\t"} {split($8, a, ";"); print $1,$2,$4,$5,$6,a[1],$9,$10}' | head
+
+```
+
+
+The code below might not work. That is fine. The VCF in the above chunk can be used for visualization in IGV.
+
+```{r, engine='bash'}
+/home/shared/bcftools-1.14/bcftools call \
+-v -c /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/F143_mpile.vcf.gz \
+> /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/output/F143_mpile_calls.vcf
+```
 
 
 
