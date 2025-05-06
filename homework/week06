@@ -1,0 +1,16 @@
+Week 6 questions
+
+What is Quarto?
+Quarto is an open source system that allows scientific files to be published. 
+
+How do you make columns using Revealjs in Quarto Presentations?
+:::: {.columns}
+
+
+How would you change the appearance of slides using Revealjs in Quarto Presentations?
+
+There are 11 built in themes, can go with default or look up the list of themes and their corresponding name. In the header "theme: _____" place the name of the desired theme. 
+
+What has been the biggest constraint working on your own research project in the past week?
+
+The biggest constraint is understanding the files that are being generated through the different software like Kallisto, what they are, how to interpret them, and what am I supposed to use them for. 
