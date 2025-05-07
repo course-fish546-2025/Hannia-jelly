@@ -19,6 +19,9 @@ A FASTQ file has four line-separated fields per sequence:
 Step 1. Downlaod FastQC software from https://www.bioinformatics.babraham.ac.uk/projects/download.html#fastqc
 #downloaded and imported manually using "upload". Next time do it on the command line. 
 
+Professor downloaded this data into my directory: https://www.ncbi.nlm.nih.gov/bioproject/PRJNA848687/
+
+
 **RUN FastQC**
 Running FastQC program on PRJNA848687_fastq folder. This will generate a HTML report that can be viewed in a web browser.
 There are 22 samples total. 11 treatment, 11 control. 
@@ -87,5 +90,52 @@ cd /gscratch/scrubbed/fish546
 **3. Differential Expression Analysis (Kallisto)**
 
 
+Already created index, next step making output folder for kallisto data
+
+```{r, engine='bash'}
+cd /home/shared/8TB_HDD_02/hannia/SeaCucumber 
+pwd
+mkdir /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01 
+#mkdir makes new folder called kallisto01 up one directory level 
+```
+Creating sub-directory
+```{r, engine='bash'}
+find /home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq/*fastq.gz \
+
+| xargs basename -s _L001_R1_001.fastq.gz | xargs -I{} /home/shared/kallisto/kallisto \
+quant -i /home/shared/8TB_HDD_02/hannia/2.RNASeq/data/cgigas_roslin_rna.index \
+-o /home/shared/8TB_HDD_02/hannia/2.RNASeq/output/kallisto_01/{} \
+-t 40 \
+--single -l 100 -s 10 /home/shared/8TB_HDD_02/hannia/2.RNASeq/data/{}_L001_R1_001.fastq.gz
+```
+
+SRR19635628_1.fastq 
+
+```{bash}
+#!/bin/bash
+
+# Set input and output directories
+INPUT_DIR="/home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq"
+OUTPUT_DIR="/home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01"
+INDEX="/home/shared/8TB_HDD_02/hannia/SeaCucumber/index.idx"
+KALLISTO="/home/shared/kallisto/kallisto"
+
+# Loop through all forward reads (_1.fastq)
+for R1 in ${INPUT_DIR}/*_1.fastq; do
+    # Extract the base sample ID (e.g., SRR19635628)
+    SAMPLE=$(basename "$R1" _1.fastq)
+
+    # Define the reverse read
+    R2="${INPUT_DIR}/${SAMPLE}_2.fastq"
+
+    # Create output directory for this sample
+    SAMPLE_OUT="${OUTPUT_DIR}/${SAMPLE}"
+    mkdir -p "$SAMPLE_OUT"
+
+    # Run kallisto quant
+    "$KALLISTO" quant -i "$INDEX" -o "$SAMPLE_OUT" -t 40 "$R1" "$R2"
+done
+
+```
 
 
