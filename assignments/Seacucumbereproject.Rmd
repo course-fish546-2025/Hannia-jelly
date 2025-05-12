@@ -258,9 +258,9 @@ Getting DEG based on Desication. Run this table using 2 control, 2 26 deg, and 2
 
 
 ```{r, engine='r'}
-deseq2.colData <- data.frame(condition=factor(c(rep("control", 12), rep("desicated", 12))), 
-                             type=factor(rep("single-read", 24)))
-rownames(deseq2.colData) <- colnames(data)
+deseq2.colData <- data.frame(condition=factor(c(rep("control", 2), rep("26.C", 2), rep("30.C", 2))), 
+                             type=factor(rep("paired", 24)))
+rownames(deseq2.colData) <- colnames(data#/change this to name of folder, look up how to do)
 deseq2.dds <- DESeqDataSetFromMatrix(countData = countmatrix,
                                      colData = deseq2.colData, 
                                      design = ~ condition)
