@@ -1,0 +1,40 @@
+---
+title: "06-slides"
+format: revealjs
+editor: visual
+---
+
+## Project Goal
+
+I am using RNA-seq data taken from Sea Cucumbers (*Apostichopus japonicus*) that were treated under 2 different temperatures (26°C & 30°C). The purpose being to conduct DGE analysis to determine the biological responses that heat stress induces on this organism. Data was obtained from the NIH website, done by researchers in **Qingdao Agricultural University.**
+
+![](images/seacuc.jpg){fig-align="center" width="100%"}
+
+```{}
+```
+
+## Methods: Heat stress experiment 
+
+-   3 controls kept at 18°C
+
+-   Six 26°C (Sub lethal temperature)
+
+-   Three 30°C (Lethal temperature)
+
+-   Sea cucumbers went through a temperature-rise process from 18°C to 26°C or to 30°C respectively, with a rate of 2°C per hour by using a heating rod.
+
+-   Maintained at 26°C temperature for 6 hours and 48 hours.
+
+-   The 30°C treatment groups were only kept at that temperature for 6 hours (likely due to lethality).
+
+-   Intestine tissue was used for RNA-Seq
+
+## Preliminary Results: DGE 
+
+When you click the **Render** button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+## Next Steps 
