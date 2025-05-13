@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="06-slides_files/libs/clipboard/clipboard.min.js"></script>
+<script src="06-slides_files/libs/quarto-html/tabby.min.js"></script>
+<script src="06-slides_files/libs/quarto-html/popper.min.js"></script>
+<script src="06-slides_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="06-slides_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="06-slides_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="06-slides_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="06-slides_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.4.552">
+
+  <title>06-slides</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="06-slides_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="06-slides_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="06-slides_files/libs/revealjs/dist/theme/quarto.css">
+  <link href="06-slides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="06-slides_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="06-slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="06-slides_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <link href="06-slides_files/libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+  <script src="06-slides_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+  <link href="06-slides_files/libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+  <script src="06-slides_files/libs/datatables-binding-0.33/datatables.js"></script>
+  <script src="06-slides_files/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+  <link href="06-slides_files/libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+  <link href="06-slides_files/libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
+  <script src="06-slides_files/libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+  <link href="06-slides_files/libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+  <script src="06-slides_files/libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">06-slides</h1>
+
+<div class="quarto-title-authors">
+</div>
+
+</section>
+<section id="project-goal" class="slide level2">
+<h2>Project Goal</h2>
+<p>I am using RNA-seq data taken from Sea Cucumbers (<em>Apostichopus japonicus</em>) that were treated under 2 different temperatures (26°C &amp; 30°C). The purpose being to conduct DGE analysis to determine the biological responses that heat stress induces on this organism. Data was obtained from the NIH website, done by researchers in <strong>Qingdao Agricultural University.</strong></p>
+
+<img data-src="images/seacuc.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><pre><code></code></pre>
+</section>
+<section id="methods-heat-stress-experiment" class="slide level2">
+<h2>Methods: Heat stress experiment</h2>
+<ul>
+<li><p>3 controls kept at 18°C</p></li>
+<li><p>Six 26°C (Sub lethal temperature)</p></li>
+<li><p>Three 30°C (Lethal temperature)</p></li>
+<li><p>Sea cucumbers went through a temperature-rise process from 18°C to 26°C or to 30°C respectively, with a rate of 2°C per hour by using a heating rod.</p></li>
+<li><p>Maintained at 26°C temperature for 6 hours and 48 hours.</p></li>
+<li><p>The 30°C treatment groups were only kept at that temperature for 6 hours (likely due to lethality).</p></li>
+<li><p>Intestine tissue was used for RNA-Seq</p></li>
+</ul>
+</section>
+<section id="preliminary-results-fast-qc-results" class="slide level2">
+<h2>Preliminary Results: Fast QC results</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href=""></a><span class="ex">/home/shared/8TB_HDD_02/hannia/SeaCucumber/FastQC/fastqc</span> <span class="dt">\</span></span>
+<span id="cb2-2"><a href=""></a>/home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq/<span class="pp">*</span>.fastq <span class="dt">\</span></span>
+<span id="cb2-3"><a href=""></a>-o /home/shared/8TB_HDD_02/hannia/SeaCucumber/output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Conclusion: The QC results show that all sampels have a red “X” for <strong>per base sequence content</strong> and <strong>sequence duplication levels</strong>.</p>
+<p><strong>Screenshot of the 30°C data.</strong></p>
+
+<img data-src="images/FastQC30degsample.png" width="149424" class="r-stretch"></section>
+<section id="preliminary-results-pseudo-alignment" class="slide level2">
+<h2>Preliminary Results: Pseudo-alignment</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href=""></a><span class="ex">/home/shared/kallisto/kallisto</span> quant <span class="dt">\</span></span>
+<span id="cb3-2"><a href=""></a>  <span class="at">-i</span> /home/shared/8TB_HDD_02/hannia/SeaCucumber/index.idx <span class="dt">\</span></span>
+<span id="cb3-3"><a href=""></a>  <span class="at">-o</span> /home/shared/8TB_HDD_02/hannia/SeaCucumber/output <span class="dt">\</span></span>
+<span id="cb3-4"><a href=""></a>  /home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq/<span class="pp">*</span>.fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="preliminary-results-path-to-dge-analysis" class="slide level2">
+<h2>Preliminary Results: Path to DGE Analysis</h2>
+<p><strong>1. RNA-seq quantification using Kallisto</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href=""></a><span class="ex">Set</span> input and output directories</span>
+<span id="cb4-2"><a href=""></a><span class="va">INPUT_DIR</span><span class="op">=</span><span class="st">"/home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq"</span></span>
+<span id="cb4-3"><a href=""></a><span class="va">OUTPUT_DIR</span><span class="op">=</span><span class="st">"/home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01"</span></span>
+<span id="cb4-4"><a href=""></a><span class="va">INDEX</span><span class="op">=</span><span class="st">"/home/shared/8TB_HDD_02/hannia/SeaCucumber/index.idx"</span></span>
+<span id="cb4-5"><a href=""></a><span class="va">KALLISTO</span><span class="op">=</span><span class="st">"/home/shared/kallisto/kallisto"</span></span>
+<span id="cb4-6"><a href=""></a></span>
+<span id="cb4-7"><a href=""></a> <span class="ex">Loop</span> through all forward reads <span class="er">(</span><span class="ex">_1.fastq</span><span class="kw">)</span></span>
+<span id="cb4-8"><a href=""></a><span class="cf">for</span> R1 <span class="kw">in</span> <span class="va">${INPUT_DIR}</span>/<span class="pp">*</span>_1.fastq<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb4-9"><a href=""></a>    <span class="ex">Extract</span> the base sample ID <span class="er">(</span><span class="ex">e.g.,</span> SRR19635628<span class="kw">)</span></span>
+<span id="cb4-10"><a href=""></a>    <span class="va">SAMPLE</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> _1.fastq<span class="va">)</span></span>
+<span id="cb4-11"><a href=""></a></span>
+<span id="cb4-12"><a href=""></a>    <span class="ex">Define</span> the reverse read</span>
+<span id="cb4-13"><a href=""></a>  <span class="va">R2</span><span class="op">=</span><span class="st">"</span><span class="va">${INPUT_DIR}</span><span class="st">/</span><span class="va">${SAMPLE}</span><span class="st">_2.fastq"</span></span>
+<span id="cb4-14"><a href=""></a></span>
+<span id="cb4-15"><a href=""></a>   <span class="ex">Create</span> output directory for this sample</span>
+<span id="cb4-16"><a href=""></a>    <span class="va">SAMPLE_OUT</span><span class="op">=</span><span class="st">"</span><span class="va">${OUTPUT_DIR}</span><span class="st">/</span><span class="va">${SAMPLE}</span><span class="st">"</span></span>
+<span id="cb4-17"><a href=""></a>    <span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$SAMPLE_OUT</span><span class="st">"</span></span>
+<span id="cb4-18"><a href=""></a></span>
+<span id="cb4-19"><a href=""></a>  <span class="ex">Run</span> kallisto quant</span>
+<span id="cb4-20"><a href=""></a>   <span class="st">"</span><span class="va">$KALLISTO</span><span class="st">"</span> quant <span class="at">-i</span> <span class="st">"</span><span class="va">$INDEX</span><span class="st">"</span> <span class="at">-o</span> <span class="st">"</span><span class="va">$SAMPLE_OUT</span><span class="st">"</span> <span class="at">-t</span> 40 <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> <span class="st">"</span><span class="va">$R2</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="creating-abundance-estimates-for-gene-expression-matrix." class="slide level2">
+<h2>2. <strong>Creating abundance estimates for gene expression matrix.</strong></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href=""></a><span class="fu">perl</span> /home/shared/trinityrnaseq-v2.12.0/util/abundance_estimates_to_matrix.pl <span class="dt">\</span></span>
+<span id="cb5-2"><a href=""></a>  <span class="at">--est_method</span> kallisto <span class="dt">\</span></span>
+<span id="cb5-3"><a href=""></a>  <span class="at">--gene_trans_map</span> none <span class="dt">\</span></span>
+<span id="cb5-4"><a href=""></a>  <span class="at">--out_prefix</span> /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01 <span class="dt">\</span></span>
+<span id="cb5-5"><a href=""></a>  <span class="at">--name_sample_by_basedir</span> <span class="dt">\</span></span>
+<span id="cb5-6"><a href=""></a>  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635628/abundance#.tsv <span class="dt">\</span></span>
+<span id="cb5-7"><a href=""></a>  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635629/abundance.tsv <span class="dt">\</span></span>
+<span id="cb5-8"><a href=""></a>  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635630/abundance.tsv <span class="dt">\</span></span>
+<span id="cb5-9"><a href=""></a>  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635631/abundance.tsv <span class="dt">\</span></span>
+<span id="cb5-10"><a href=""></a>  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635632/abundance.tsv <span class="dt">\</span></span>
+<span id="cb5-11"><a href=""></a>  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635633/abundance.tsv <span class="dt">\</span></span>
+<span id="cb5-12"><a href=""></a>  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635634/abundance.tsv <span class="dt">\</span></span>
+<span id="cb5-13"><a href=""></a>  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635635/abundance.tsv <span class="dt">\</span></span>
+<span id="cb5-14"><a href=""></a>  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635636/abundance.tsv <span class="dt">\</span></span>
+<span id="cb5-15"><a href=""></a>  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635637/abundance.tsv <span class="dt">\</span></span>
+<span id="cb5-16"><a href=""></a>  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635638/abundance.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="top-100-differential-expression-results" class="slide level2">
+<h2>2. <strong>Top 100 Differential Expression Results</strong></h2>
+<div class="cell">
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-4e0f7b040f2c9fed1f37" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-4e0f7b040f2c9fed1f37">{"x":{"filter":"none","vertical":false,"caption":"<caption>Top 100 Differential Expression Results<\/caption>","data":[["XM_071993146.1","XM_071992009.1","XR_011797039.1","XM_071962108.1","XR_011792740.1","XM_071959556.1","XM_071999486.1","XM_071970609.1","XM_071954983.1","XM_071957835.1","XR_011794356.1","XM_071997236.1","XR_011788239.1","XM_071969037.1","XR_011799096.1","XM_071978727.1","XM_071976889.1","XM_071991973.1","XM_071976044.1","XM_071957734.1","XM_071956363.1","XR_011798920.1","XR_011798578.1","XM_071998017.1","XR_011788325.1","XR_011792668.1","XM_071970477.1","XM_071990724.1","XM_071961523.1","XM_071988118.1","XM_071961123.1","XM_071960124.1","XM_071965538.1","XM_071973957.1","XR_011790471.1","XM_071979960.1","XR_011789076.1","XM_071992599.1","XR_011794267.1","XM_071997757.1","XR_011797310.1","XM_071979667.1","XM_071967322.1","XR_011792187.1","XM_071981319.1","XM_071968436.1","XM_071980721.1","XM_071963677.1","XM_071958038.1","XM_071960025.1","XR_011797054.1","XM_071960788.1","XM_071967848.1","XM_071997331.1","XM_071971719.1","XM_071986929.1","XM_071955763.1","XM_071987973.1","XM_071976045.1","XM_071971287.1","XM_071978849.1","XM_071959773.1","XM_071962777.1","XM_071976964.1","XM_071991703.1","XM_071994795.1","XR_011792310.1","XM_071972887.1","XM_071981249.1","XM_071966590.1","XM_071979847.1","XM_071958739.1","XR_011790495.1","XM_071993767.1","XM_071992067.1","XM_071994432.1","XM_071985694.1","XM_071969666.1","XR_011796600.1","XM_071959128.1","XM_071959717.1","XM_071955370.1","XM_071968224.1","XM_071981084.1","XR_011793717.1","XM_071983275.1","XM_071998504.1","XM_071969564.1","XM_071963795.1","XM_071980734.1","XM_071997577.1","XM_071981383.1","XM_071976503.1","XM_071966317.1","XM_071965028.1","XM_071993459.1","XR_011794939.1","XM_071955516.1","XM_071990738.1","XM_071969224.1"],[0,321.0083487241015,1.080647635675737,3988.467354913493,20.01789961046804,6.945499062150114,1.606362947565015,76.78210300317488,150.3082151384579,100.0519858042716,0,0.1881352843739123,0,86.90758157912092,127.6487193198869,8.606748810864833,10.62047630972872,196.0087563602437,0,37.99784805567045,329.924678635198,0,55.71759629816636,0,0,0.05569950792083424,46.01311770876955,93.78975290532389,76.07474980846247,5.42542297579821,80.50231050208494,0,0,159.1140929859231,0.1923772769580311,78.74918163117052,0,37.47687418582902,15.91360372434916,99.24463104597775,9.577679656443109,0.3571144289165915,291.9092092076548,0,2.18632401068637,162.2356869765877,405.8916782986957,1342.679554457384,20.69205073914637,213.6692105830973,1.706770282288204,5.323015461484383,8.487509509900368,0.4368995552494997,0,0,174.1540627173443,75.80461952865812,393.579899392017,14.13312540110405,5.530353355212479,1009.045235147019,637.4530030946447,10.81964717627932,3798.010038475943,22.81119975288857,0,0,4.722414661506389,284.8069136107662,786.3146010079997,0.9618863847901552,0,51.23795207006938,138.2212216026288,3.718937463423148,1.201749644688069,15.59570944523351,5.130448485704171,0,26.86112790462106,16.77297099231751,49.98762041040192,109.349899828069,0,0,3.421194873402776,164.0481238219442,38.24297621908799,337.7300491019196,1.949482777229198,514.9865096849549,488.5806548679431,155.8513238359213,12.99621864750567,7.887468355279274,0,616.8081587707433,3.338423117542728,0],[null,0.1324665606918804,-2.749627173722402,-0.1146234595680732,1.13513352565579,-5.250405016363545,0.2237340130778859,1.616712975794472,0.8709611464673497,2.47169282959731,null,-1.534927144650771,null,-0.1471300106791388,-3.456403672087532,0.3107278880313531,-1.06184862088619,-0.6401167616010048,null,-1.410585523388036,-0.02248119777311029,null,-9.51460029842789,null,null,0.7465197226488307,-5.437669658272569,-1.168934447114832,0.2107649872292567,4.035890001740237,1.293691379878452,null,null,0.5976803679577081,-0.2152711677749936,0.009530558132004052,null,0.9304433786960933,1.178147198709717,-0.809571586401799,-1.45318944656797,-2.213129621818443,1.589457232644823,null,-3.823042241075377,-0.01873517201067449,-0.08644122620471394,-0.1382508382187425,8.870816765871009,0.2651654093976489,-0.2687938163638683,-2.118198201176531,2.015878627941749,3.302185942878519,null,null,0.2764067091384318,-7.061554470023714,0.001109746951495147,0.08312764607689331,-4.460147214094023,0.1939686483362943,-0.4822736023953044,-1.061466839803872,-2.482441115114844,-1.074723619056441,null,null,3.060194775857616,1.953035831994792,-0.1696896636265208,-0.2152818402225753,null,0.4541741452711117,0.1742594942783554,-1.818881147145315,4.764483913254407,-0.2152999950393848,-0.1992760199986595,null,1.120059619736241,-1.748114948945168,-0.7764867990201458,-0.4452863265595767,null,null,6.272533695079402,-0.356828705418619,-0.0640860178653722,-0.5925073760875584,5.465521295051874,-1.331126313430111,-0.6735462953185777,-0.05714643312243379,-7.415561943521638,-0.2152955544966171,null,-2.662181163762536,4.818845884639102,null],[null,0.4018660240380568,3.628267318279082,0.4041485350915585,1.403485821171889,2.553549183846094,1.623178080314155,3.384659226318018,2.460753862315338,2.936224464995918,null,3.673688037957811,null,1.386869880581974,0.9615316978150102,1.066304702009458,2.658832653152335,1.096280412730299,null,3.106629963986168,0.5200173210566884,null,3.255356697431273,null,null,3.678104264408234,2.016730434783261,0.9098188743670088,0.4711767889936042,1.150428984764507,0.9808853772269752,null,null,1.114397220219189,3.678104264406283,0.8014456902228929,null,0.7772509931198207,1.387156717119986,1.688031878539964,2.619863239230874,3.648611335228148,1.395787940273289,null,3.593781732260933,3.024829271127892,2.361935662139368,0.6540951040333797,3.485394816162644,0.7295530586518123,1.586546094011715,3.244013642192176,3.396022201119436,3.531915367319286,null,null,0.4787011255882636,3.341470144759469,0.6507442222037334,2.780785511077739,3.596607016753499,0.3424595165961468,1.379650967839178,1.127145951996752,0.8342318207815712,0.8518046887992483,null,null,1.707730564428304,1.411726032773388,0.2489614302855403,3.678104264394007,null,1.420958878906462,1.811033716873678,1.264559232662187,3.501721307708594,3.678104264391159,1.831072444625939,null,0.6474996066745251,2.014080203085236,3.340501260308844,0.4174884857417919,null,null,3.490491987371887,2.050668574617568,1.949734085943462,1.024879318707601,3.495061128806334,0.9170962659714073,1.120803746469124,0.5548103598592324,3.584373334124895,3.678104264391342,null,0.750972131827341,3.446890119496075,null],[null,0.3296286642021167,-0.7578347824235213,-0.2836171595725458,0.8087958627953726,-2.056120575071717,0.1378370098705274,0.4776590101666465,0.3539407820528044,0.841792873488896,null,-0.4178164092300093,null,-0.106087826074497,-3.594685104965215,0.2914062813807202,-0.3993664737144148,-0.5838987490497859,null,-0.4540564984373263,-0.04323163260682919,null,-2.922752000091309,null,null,0.2029631758600887,-2.69627986194246,-1.284799073802573,0.4473161500154407,3.508160916657003,1.318901688121602,null,null,0.536326147547417,-0.05852775024846735,0.01189170800750513,null,1.197095130057501,0.8493252306457385,-0.4795949630418264,-0.5546814142079376,-0.6065676550555517,1.138752662050952,null,-1.063793665251398,-0.006193794866210268,-0.03659762100650031,-0.211361982938321,2.545139714081981,0.3634628163819436,-0.1694207419364669,-0.652956009070645,0.5935999556414123,0.9349561355386806,null,null,0.5774097748334364,-2.113307665219923,0.001705350448962896,0.02989358429326534,-1.240098568822791,0.5663987681353773,-0.349562036803153,-0.9417297182529661,-2.975720960618724,-1.261701929078873,null,null,1.791965805145659,1.383438278146633,-0.681590170139605,-0.05853065186504289,null,0.3196251151339678,0.09622101049514041,-1.438351878002704,1.360611966111067,-0.0585355877819368,-0.108830221646074,null,1.729822857327626,-0.8679470391831198,-0.2324461925059583,-1.066583490963574,null,null,1.797034262726445,-0.1740060338541856,-0.0328691067809698,-0.5781240437505613,1.563784178195049,-1.45145756538454,-0.6009493610638394,-0.1030017412380928,-2.06885869642039,-0.05853438049077286,null,-3.544979967877967,1.398027125199919,null],[null,0.7416805611356302,0.4485498969037346,0.7767037854500349,0.4186325763485344,0.0397708954872673,0.8903692338699236,0.6328929231630784,0.7233832630968334,0.3999039016606263,null,0.6760813525237153,null,0.9155126700207181,0.000324784163348024,0.7707406110664337,0.6896231935041901,0.5592884348620617,null,0.6497881624844313,0.9655168894789665,null,0.003469527384809222,null,null,0.8391638145370419,0.007011872758678863,0.1988625061179811,0.654646807888681,0.0004512160323296535,null,null,null,0.5917331625071591,0.9533282588739079,0.9905120134000939,null,0.2312694779212137,0.3957003451864672,0.6315154286510354,0.5791125909744821,0.5441378710656881,0.2548063310586377,null,0.2874221816699949,0.9950580983012649,0.9708058404229999,0.8326048198095809,null,0.7162591846200602,0.8654657096250141,0.5137846391486083,0.5527797107118723,0.3498109055564528,null,null,0.5636626725447536,0.03457444308413857,0.9986393278655367,0.9761519225567599,0.2149389382770445,0.5711227319806753,0.726667405754813,0.3463310358720691,0.002923006925260195,0.2070560625078607,null,null,0.07313844369482732,0.1665305203967984,0.4954981323323525,0.9533259476809224,null,0.7492525332093241,0.9233450442747468,0.1503342391739578,0.1736363480522156,0.9533220161298064,0.9133371527729626,null,0.08366192931639202,0.3854233261523821,0.8161914748100878,0.2861599586567128,null,null,null,0.8618607202442883,0.973778968695424,0.563180375182232,null,0.1466524902448706,0.5478737148324274,0.9179615889976145,0.03855934846294649,0.9533229777599365,null,0.0003926429253684947,0.1621049218071194,null],[null,0.9928304393232156,null,0.9928304393232156,0.9461096225476877,0.3942202798299302,null,0.9729784845163618,0.9919977307637585,0.9403433592362305,null,null,null,0.9928304393232156,0.02038922803240373,0.9928304393232156,0.9826282615170355,0.9681636686064986,null,0.9729784845163618,0.9928304393232156,null,0.09801414862086051,null,null,null,0.1523733887943676,0.7116587524836685,0.9729784845163618,0.02124475485552119,null,null,null,0.9729784845163618,null,0.9989913883898158,null,0.7468770181382097,0.9393726681947645,0.9729784845163618,0.9681636686064986,null,0.7824216143920125,null,0.8438008916450646,0.9989913883898158,0.9928304393232156,0.9928304393232156,null,0.9919977307637585,null,0.9681636686064986,0.9681636686064986,null,null,null,0.9681636686064986,0.3798745766809718,0.9990191292105124,0.9928304393232156,0.7341644081871378,0.9681636686064986,0.9919977307637585,0.9017374897129912,0.09434595332232915,0.7177096645211121,null,null,0.5101632183651535,0.673074188272383,0.9681636686064986,null,null,0.9928304393232156,0.9928304393232156,0.6700829717732267,null,0.9928304393232156,0.9928304393232156,null,0.5412279673126286,0.9306161507525466,0.9928304393232156,0.8438008916450646,null,null,null,0.9928304393232156,0.9928304393232156,0.9681636686064986,null,0.662869255906815,0.9681636686064986,0.9928304393232156,0.3920185451547266,0.9928304393232156,null,0.02087316462199532,0.673074188272383,null]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>baseMean<\/th>\n      <th>log2FoldChange<\/th>\n      <th>lfcSE<\/th>\n      <th>stat<\/th>\n      <th>pvalue<\/th>\n      <th>padj<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"baseMean","targets":1},{"name":"log2FoldChange","targets":2},{"name":"lfcSE","targets":3},{"name":"stat","targets":4},{"name":"pvalue","targets":5},{"name":"padj","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="top-50-most-deferentially-expressed-genes." class="slide level2">
+<h2>3. <strong>Top 50 most deferentially expressed genes.</strong></h2>
+
+<img data-src="06-slides_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
+<section id="plan-for-next-4-weeks" class="slide level2">
+<h2>Plan for next 4 weeks</h2>
+<ul>
+<li><p>Import missing file for 30 deg C treatment</p></li>
+<li><p>ID the names of the genes in the results to understand how to interpret results</p></li>
+<li><p>Edit the tables to show the names of the samples in a more clear way (Ex. Instead of XM32333 -&gt; Control 1, Control 2, 26_1, 26_2, 26_3…ect.)</p></li>
+<li><p>Look through literature and ask for advice on how to conduct the DGE analysis and interpret the results</p></li>
+<li><p>Complete a comprehensive analysis from data QC to DGE analysis</p></li>
+</ul>
+<div class="quarto-auto-generated-content">
+<div class="footer footer-default">
+
+</div>
+</div>
+</section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="06-slides_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="06-slides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="06-slides_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="06-slides_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="06-slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="06-slides_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="06-slides_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="06-slides_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="06-slides_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="06-slides_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        text: function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>
