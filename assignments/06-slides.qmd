@@ -10,10 +10,10 @@ I am using RNA-seq data taken from Sea Cucumbers (*Apostichopus japonicus*) that
 
 ![](images/seacuc.jpg){fig-align="center" width="100%"}
 
-```{}
+```         
 ```
 
-## Methods: Heat stress experiment 
+## Methods: Heat stress experiment
 
 -   3 controls kept at 18°C
 
@@ -29,12 +29,170 @@ I am using RNA-seq data taken from Sea Cucumbers (*Apostichopus japonicus*) that
 
 -   Intestine tissue was used for RNA-Seq
 
-## Preliminary Results: DGE 
+## Preliminary Results: Fast QC results
 
-When you click the **Render** button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-1 + 1
+```{bash}
+#| eval: false
+#| echo: true
+/home/shared/8TB_HDD_02/hannia/SeaCucumber/FastQC/fastqc \
+/home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq/*.fastq \
+-o /home/shared/8TB_HDD_02/hannia/SeaCucumber/output
 ```
 
-## Next Steps 
+Conclusion: The QC results show that all sampels have a red "X" for **per base sequence content** and **sequence duplication levels**.
+
+**Screenshot of the 30°C data.**
+
+![](images/FastQC30degsample.png){width="149424"}
+
+## Preliminary Results: Pseudo-alignment
+
+```{bash}
+#| eval: false
+#| echo: true
+/home/shared/kallisto/kallisto quant \
+  -i /home/shared/8TB_HDD_02/hannia/SeaCucumber/index.idx \
+  -o /home/shared/8TB_HDD_02/hannia/SeaCucumber/output \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq/*.fastq
+```
+
+## Preliminary Results: Path to DGE Analysis
+
+**1. RNA-seq quantification using Kallisto**
+
+```{bash}
+#| eval: false
+#| echo: true
+Set input and output directories
+INPUT_DIR="/home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq"
+OUTPUT_DIR="/home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01"
+INDEX="/home/shared/8TB_HDD_02/hannia/SeaCucumber/index.idx"
+KALLISTO="/home/shared/kallisto/kallisto"
+
+ Loop through all forward reads (_1.fastq)
+for R1 in ${INPUT_DIR}/*_1.fastq; do
+    Extract the base sample ID (e.g., SRR19635628)
+    SAMPLE=$(basename "$R1" _1.fastq)
+
+    Define the reverse read
+  R2="${INPUT_DIR}/${SAMPLE}_2.fastq"
+
+   Create output directory for this sample
+    SAMPLE_OUT="${OUTPUT_DIR}/${SAMPLE}"
+    mkdir -p "$SAMPLE_OUT"
+
+  Run kallisto quant
+   "$KALLISTO" quant -i "$INDEX" -o "$SAMPLE_OUT" -t 40 "$R1" "$R2"
+```
+
+## 2. **Creating abundance estimates for gene expression matrix.**
+
+```{bash}
+#| eval: false
+#| echo: true
+perl /home/shared/trinityrnaseq-v2.12.0/util/abundance_estimates_to_matrix.pl \
+  --est_method kallisto \
+  --gene_trans_map none \
+  --out_prefix /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01 \
+  --name_sample_by_basedir \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635628/abundance#.tsv \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635629/abundance.tsv \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635630/abundance.tsv \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635631/abundance.tsv \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635632/abundance.tsv \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635633/abundance.tsv \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635634/abundance.tsv \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635635/abundance.tsv \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635636/abundance.tsv \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635637/abundance.tsv \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635638/abundance.tsv
+```
+
+## 2. **Top 100 Differential Expression Results**
+
+```{r}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("DESeq2")
+library(DESeq2)
+library(DT)
+
+setwd("/home/shared/8TB_HDD_02/hannia/SeaCucumber/output")
+countmatrix <- read.delim("/home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01.isoform.counts.matrix", header = TRUE, sep = '\t')
+rownames(countmatrix) <- countmatrix$X
+countmatrix$X <- NULL
+countmatrix <- countmatrix[1:1000, ]
+countmatrix <- round(countmatrix, 0)
+sample_conditions <- c(
+  rep("control", 3),
+  rep("26.C", 6),
+  rep("30.C", 2)
+)
+
+# Build colData
+deseq2.colData <- data.frame(
+  condition = factor(sample_conditions),
+  type = factor(rep("paired", 11))
+)
+rownames(deseq2.colData) <- colnames(countmatrix)
+
+
+
+# Create DESeq dataset
+deseq2.dds <- DESeqDataSetFromMatrix(
+  countData = countmatrix,
+  colData = deseq2.colData,
+  design = ~ condition
+)
+
+# Run DESeq
+deseq2.dds <- DESeq(deseq2.dds)
+
+# Get results
+deseq2.res <- results(deseq2.dds)
+
+# Convert to data frame
+deseq2.df <- as.data.frame(deseq2.res)
+
+# Display as interactive data table (top 100 genes)
+datatable(
+  head(deseq2.df, 100),
+  options = list(pageLength = 10),
+  caption = "Top 100 Differential Expression Results"
+)
+
+```
+
+## 3. **Top 50 most deferentially expressed genes.**
+
+```{r}
+library(pheatmap)
+
+# Select top 50 differentially expressed genes
+res <- results(deseq2.dds)
+res_ordered <- res[order(res$padj), ]
+top_genes <- row.names(res_ordered)[1:50]
+
+# Extract counts and normalize
+counts <- counts(deseq2.dds, normalized = TRUE)
+counts_top <- counts[top_genes, ]
+
+# Log-transform counts
+log_counts_top <- log2(counts_top + 1)
+
+# Generate heatmap
+pheatmap(log_counts_top, scale = "row")
+```
+
+## Plan for next 4 weeks
+
+-   Import missing file for 30 deg C treatment
+
+-   ID the names of the genes in the results to understand how to interpret results
+
+-   Edit the tables to show the names of the samples in a more clear way (Ex. Instead of XM32333 -\> Control 1, Control 2, 26_1, 26_2, 26_3...ect.)
+
+-   Look through literature and ask for advice on how to conduct the DGE analysis and interpret the results
+
+-   Complete a comprehensive analysis from data QC to DGE analysis
