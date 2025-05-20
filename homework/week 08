@@ -1,0 +1,27 @@
+Week 08 Questions
+
+Textbook: Working with Range Data A crash course in Genomic Ranges 263-269
+Working with Range Data with BEDtools 329-337
+
+
+*What is a genomic range and what 3 types of information do you need for a range?
+
+A genomic range contains the begining and ending of a sequence on a DNA strand. This sequence can be genetic code, exon code, or regulatory code. The informationg needed for a range is the name/number/ID of the chromosome, and range (begining and end #), and strand (+/-). 
+
+*What does 0-based and 1-based refer to? What are the advantages and disadvantages of each?
+
+0-based coordinate systems refer to half opened, half closed coordinates shown as: [1,5). The first base position starts on 0. The bracket indicates that the number is the begining of the sequence, but the paranthesis indicates that the number 5 does not correspond to the end of the sequence. This system would only read bases at positions 1-4, but exclude 5. 
+
+1-based coordinates systems refer to a coordinate system where the first base starts at position 1. In this system, all positions are included in: [1,5]. This system is made of closed intervals, unlike the 0-based one that is half opened/half closed. 
+
+
+0-based system can allow to view short ranges such as 22-23, which can be useful at times. The disadvantage is that because the base positions start at 0, counting could be confusing and non-intuitive. 1-based systems are more intuitive because the base position starts at 1. Additionally, the 1-based system is most commonly found in published annotated genomes. One disadvantage of using this system is that it could be harder to use with programs that are built for 0-based systems. 
+
+
+*What is the value of BEDtools over the bioconductor package GenomicRange?
+Both are tools that can be used to analyze genomic intervals. BEDtools requires less memory and can work fast with large datasets. Meanwhile GenomicRange requires more memory to install and works slower with large datasets. Additionally, it is harder to navigate. 
+
+
+*Describe one subcommand of the BEDtools suite as well as a practical use case.
+
+bedtools intersect outputs the regions of two ranges that overlap. For example, if one was interested in knowing if two different ranges have overlapping exons, "bedtools intersect" could be used to know the answer. 
