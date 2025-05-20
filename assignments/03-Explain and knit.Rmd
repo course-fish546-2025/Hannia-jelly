@@ -1,0 +1,38 @@
+---
+title: "03-Explain and knit"
+author: "Hannia Larino"
+date: "2025-04-17"
+output: html_document
+theme: readable
+    toc: true
+    toc_float: true
+    number_sections: true
+    code_folding: show
+---
+
+HOW TO COMPLETE BLAST 
+
+1. Downloading latest NCBI software .gz file from https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/
+
+```{bash}
+
+cd /home/jovyan/applications #setting directory 
+curl -O https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.16.0+-x64-linux.tar.gz #uploading NCBI software to directory 
+tar -xf ncbi-blast-2.16.0+-x64-linux.tar.gz #extract files from .tar archive 
+
+```
+
+2. 
+
+
+```{bash}
+
+
+```
+
+
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+

@@ -1,0 +1,14 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+data-shell*
+assignments/output/*
+assignments/data/*
+assignments/images/*
+assignments/nc*
+assignments/rs*
+
+
+
