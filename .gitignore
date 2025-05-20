@@ -1,9 +1,0 @@
-.Rproj.user
-.Rhistory
-.RData
-.Ruserdata
-
-./assignments/output/*.ht2
-./assignments/output/*.sam
-./assignments/output/*.bam
-./assignments/output/F143_mpileup_output.txt
