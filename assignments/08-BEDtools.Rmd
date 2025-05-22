@@ -1,0 +1,63 @@
+---
+title: "08-BEDtools"
+author: "Hannia Larino"
+date: "2025-05-20"
+output: html_document
+---
+
+Convert bam to bed. Get coverage of sequence reads on gene regions. Result is a textfile with coverage number for each gene.
+```{bash}
+/home/shared/bedtools2/bin/bedtools bamtobed \
+-i /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/data/19F_R1_val_1_bismark_bt2_pe.deduplicated.sorted.bam \
+> /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/08-19F.bed
+```
+
+
+Firs, curl virginica file in
+```{bash}
+cd /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/data 
+curl -O https://eagle.fish.washington.edu/Cvirg_tracks/C_virginica-3.0_Gnomon_genes.bed
+```
+```{bash}
+/home/shared/bedtools2/bin/bedtools coverage \
+-a /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/data/C_virginica-3.0_Gnomon_genes.bed \
+-b /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/08-19F.bed \
+> /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/08-gene-19F-coverage.out
+```
+
+
+#Intersect
+
+
+Lets grab a bed file of Transposable Elements and lncRNAs
+
+```{bash}
+cd /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/data
+curl -O http://owl.fish.washington.edu/halfshell/genomic-databank/cgigas_uk_roslin_v1_gene.gff 
+curl -O http://owl.fish.washington.edu/halfshell/genomic-databank/cgigas_uk_roslin_v1_rm.te.bed 
+curl -O http://owl.fish.washington.edu/halfshell/genomic-databank/cgigas_uk_roslin_v1_lncRNA.gff
+```
+
+
+```{bash}
+/home/shared/bedtools2/bin/bedtools intersect \
+-a /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/data/cgigas_uk_roslin_v1_gene.gff \
+-b /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/data/cgigas_uk_roslin_v1_rm.te.bed \
+> /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/08-gene-TE-intersect.out
+head -2 /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/08-gene-TE-intersect.out
+```
+
+
+#Closest
+For every long non coding RNA, what is closest gene?
+```{bash}
+/home/shared/bedtools2/bin/bedtools closest \
+-a /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/data/cgigas_uk_roslin_v1_lncRNA.gff \
+-b /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/data/cgigas_uk_roslin_v1_gene.gff \
+> /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/08-lnc-gene-closet.out
+```
+
+```{bash}
+head head /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/08-lnc-gene-closet.out
+```
+#done
