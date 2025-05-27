@@ -1,0 +1,16 @@
+
+## Week 09 Questions
+
+## What is your goal with respect to your research project to get accomplished this week?
+
+This week, I want to determine if there are targeted genes in my gene matrix that I can do an analysis on. I have completed a general analysis with p-values for all of my gene matrix counts (by treatment group). Now I just want to investigate if I can do a targeted analysis for a gene family. 
+
+## What is the overall status of your research repo? Is it will organized with a clear Readme file? Are file names and directory clear? Would your classmates be able to understand what the code in your files is designed to do?
+
+My research repo does not have a Readme file, but my file names and directory are organized for the most part. I have included most of the information of how to work in my repo on my actual script, so I geel like my script and my compendium Rpub is the most informative on how to navigate my repo. 
+
+
+
+## Go to one of your classmates rpubs link (see issues). What are three things you think are neat? What are two things that are really not that clear to you?
+
+I enjoyed seen Kathleen's "How to work in this repo" section. I found it helpful to know what I should write in my readme file. I also liked that under the "Completed Work" Kathleen included the name of the scripts for those steps. So far, I have done all my code on one script, but I contemplated doing different sections on different script files. I also liked that Kathleen provided figures of her results. Although one thing I found to be unclear is what some of the acronyms stand for. Another thing that is not clear is what the purpose of the research study was. Although there are preliminary results, the thesis question/s were not stated in the background. 
