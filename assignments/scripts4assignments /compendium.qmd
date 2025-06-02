@@ -1,0 +1,147 @@
+---
+title: "Compendium of FISH546 project"
+author: Hannia Larino
+date: "2025"
+format: revealjs
+editor: visual
+execute:
+  eval: false   
+---
+
+## Differential Gene Expression Analysis Project
+
+I am using RNA-seq data taken from Sea Cucumbers (*Apostichopus japonicus*) that were treated under 2 different temperatures (26°C & 30°C). The purpose being to conduct DGE analysis to determine the biological responses that heat stress induces on this organism. Data was obtained from NCBI, done by researchers Xu et al. at Qingdao Agricultural University (2023).
+
+## Methods
+
+The design experiment consisted of 3 controls maintained at 18°C. Six sub-lethal temperature treatment groups (26°C) and three lethal temperature treatment groups (30°C). The treatment groups went through a temperature-rise process from 18°C to 26°C or to 30°C respectively, with a rate of 2°C per hour by using a heating rod. The 26°C treatment group was able to be kept at that temperature for 6 hours and 48 hours, creating two treatment groups within the 26°C treatment group (6 hrs vs 48 hrs). The 30°C treatment group was only kept at 30°C for 6 hours. The researchers state that there was full mortality of the organisms when they did try to create a 48 hr group within this temperature treatment. Intestine tissue was obtained for RNA-Seq analysis.
+
+## Code
+
+4 sections.
+
+## Part 1: Obtain data & conduct quality check (QC)
+
+FastQ files were obtained from NCBI. Accession code being: PRJNA848687. More information about the data can be found [here](https://www.ncbi.nlm.nih.gov/bioproject/848687). Go [here](https://www.ncbi.nlm.nih.gov/biosample?LinkName=bioproject_biosample_all&from_uid=848687) if you want to access information about the individual files (12 total).
+
+The quality check was done using FastQC:
+
+```{bash}
+#| echo: true
+/home/shared/8TB_HDD_02/hannia/SeaCucumber/FastQC/fastqc \
+/home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq/*.fastq \
+-o /home/shared/8TB_HDD_02/hannia/SeaCucumber/output
+```
+
+Results: HTML results of QC did not show presence of outliers that needed to be removed. Refer to \~SeaCucumber/output_fastqc for the html files.
+
+## Part 2: Pseudo-alignment
+
+The reference genome of *Apostichopus japonicus* for the pseudo-alignment was obtained from NCBI and can be accessed [here](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_037975245.1/). The **NCBI RefSeq assembly ID is:** GCF_037975245.1.
+
+Pseudo-aligment was done using Kallisto. An index was created first (1). Then the pseudo-alignment was completed using Kallisto quant for paired-end reads (2).
+
+1.  Creating the index from the rna.fna of the reference genome.
+
+```{bash}
+#| echo: true
+/home/shared/kallisto/kallisto index \
+-i /home/shared/8TB_HDD_02/hannia/SeaCucumber/index.idx \
+/home/shared/8TB_HDD_02/hannia/SeaCucumber/GCF_037975245.1_ref/ncbi_dataset/data/GCF_037975245.1/rna.fna
+```
+
+## Part 2: Pseudo-alignment
+
+2 . Using Kallisto quant to complete the pseudo-alignment.
+
+```{bash}
+#| echo: true
+find /home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq/*_1.fastq \
+| xargs -n1 basename \
+| sed 's/_1\.fastq$//' \
+| xargs -I{} /home/shared/kallisto/kallisto quant \
+-i /home/shared/8TB_HDD_02/hannia/SeaCucumber/index.idx \
+-o /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/{} \
+-t 40 \
+--paired \
+/home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq/{}_1.fastq \
+/home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq/{}_2.fastq
+```
+
+## Part 3: Creating a gene expresison matrix
+
+```{bash}
+#| echo: true
+perl /home/shared/trinityrnaseq-v2.12.0/util/abundance_estimates_to_matrix.pl \
+  --est_method kallisto \
+  --gene_trans_map none \
+  --out_prefix /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01 \
+  --name_sample_by_basedir \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635628/abundance.tsv \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635629/abundance.tsv \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635630/abundance.tsv \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635631/abundance.tsv \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635632/abundance.tsv \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635633/abundance.tsv \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635634/abundance.tsv \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635635/abundance.tsv \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635636/abundance.tsv \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635637/abundance.tsv \
+  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635638/abundance.tsv \
+ /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635639/abundance.tsv
+```
+
+## Part 4: DESeq2 for DGE analysis
+
+A. First step is to filter data for low-read counts in the matrix.
+
+```{r}
+#| echo: true
+# Load counts
+counts <- read.table("~/SeaCucumber/output/kallisto_01.isoform.counts.matrix", header=TRUE, row.names=1)
+
+# Filter: keep rows with counts >5 in at least 3 samples
+keep <- rowSums(counts > 5) >= 3
+filtered.counts <- counts[keep, ]
+
+# Summary
+cat("Before filtering:", nrow(counts), "isoforms\n")
+cat("After filtering:", nrow(filtered_counts), "isoforms\n")
+```
+
+Results: Before filtering: 56281 isoforms 
+After filtering: 29310 isoforms
+
+## B. Results so far (week 8)
+
+Visualization of results: MA Plot
+
+![](images/MA%20figure.png){fig-align="center" width="938"}
+
+-   1,388 genes are respresented by the red dots and have a p-val below 0.05.
+-   MA plot shows clear significant distinction (blue lines) between significant gene expression levels (red dots).
+
+## Top 50 diferentially expressed genes:
+
+![](images/heat%20map%20filtered%20counts.png){fig-align="center"}
+
+## Results of heat map:
+
+-   Group 30_a (Treatment group: 30°C for 6 hrs) shows deferentially expressed genes with lowest p-vals.
+
+-   Evidently, group 30_a in comparison to the control group shows drastic differences, with group 30_a showing the most red clusters (high expression values), whereas the control group shows the most blue clusters (low expression values) of the corresponding genes.
+
+-   Contrastingly, the treatment group 26_a and 26_b (Treatment group: 26°C for 6 and 48 hrs) showed average (yellow) or negative (blue) expression levels. Except for one outlier in the sample labelled 26_a2.
+
+## Plan for next 2 weeks
+
+-   The total genes that have a p-value \< 0.05 is 1388 in 6 groups (control and 30°C group).
+
+-   I want to identify these genes and group them by families to try to analyze the potential physiological effects that 30°C temperature, a lethal temperature, had on *Apostichopus japonicus.*
+
+## Refer to readme.md to know how to navigate the repo for this project.
+
+## References
+
+Xu, D., Zhang, J., Song, W., Sun, L., Liu, J., Gu, Y., Chen, Y., & Xia, B. (2023). Analysis of differentially expressed genes in the sea cucumber Apostichopus japonicus under heat stress. Acta Oceanologica Sinica, 42(11), 117–126. https://doi.org/10.1007/s13131-023-2196-4
+

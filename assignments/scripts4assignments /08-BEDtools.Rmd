@@ -47,7 +47,6 @@ curl -O http://owl.fish.washington.edu/halfshell/genomic-databank/cgigas_uk_rosl
 head -2 /home/shared/8TB_HDD_02/hannia/Hannia-jelly/assignments/output/08-gene-TE-intersect.out
 ```
 
-
 #Closest
 For every long non coding RNA, what is closest gene?
 ```{bash}

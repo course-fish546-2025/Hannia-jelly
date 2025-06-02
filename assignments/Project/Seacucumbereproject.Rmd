@@ -3,99 +3,114 @@ title: "Project-Exploring data"
 author: "Hannia Larino"
 date: "2025-04-21"
 output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
-Location of folder: /home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq
-Fastq files: raw data generated from RNA-seq experiments are typically stored in fastq files, which contain millions of short sequencing reads that need to be preprocessed before performing differential gene expression analysis.
-Using Kallisto to analyze RNA seq data and ID DEG. 
+Location of folder:
+/home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq Fastq
+files: raw data generated from RNA-seq experiments are typically stored
+in fastq files, which contain millions of short sequencing reads that
+need to be preprocessed before performing differential gene expression
+analysis. Using Kallisto to analyze RNA seq data and ID DEG.
 
-Components of fastq files: 
-A FASTQ file has four line-separated fields per sequence:
-*Field 1 begins with a ‘@’ character and is followed by a sequence identifier and an optional description (like a FASTA title line).
-*Field 2 is the raw sequence letters.
-*Field 3 begins with a ‘+’ character and is optionally followed by the same sequence identifier (and any description) again.
-*Field 4 encodes the quality values for the sequence in Field 2, and must contain the same number of symbols as letters in the sequence.
----------
-Step 1. Downlaod FastQC software from https://www.bioinformatics.babraham.ac.uk/projects/download.html#fastqc
-#downloaded and imported manually using "upload". Next time do it on the command line. 
+Components of fastq files: A FASTQ file has four line-separated fields
+per sequence: *Field 1 begins with a '\@' character and is followed by a
+sequence identifier and an optional description (like a FASTA title
+line).* Field 2 is the raw sequence letters. *Field 3 begins with a '+'
+character and is optionally followed by the same sequence identifier
+(and any description) again.* Field 4 encodes the quality values for the
+sequence in Field 2, and must contain the same number of symbols as
+letters in the sequence. --------- Step 1. Downlaod FastQC software from
+<https://www.bioinformatics.babraham.ac.uk/projects/download.html#fastqc>
+#downloaded and imported manually using "upload". Next time do it on the
+command line.
 
-Professor downloaded this data into my directory: https://www.ncbi.nlm.nih.gov/bioproject/PRJNA848687/
+Professor downloaded this data into my directory:
+<https://www.ncbi.nlm.nih.gov/bioproject/PRJNA848687/>
 
+About the sample ID of .fastq files:
+<https://www.ncbi.nlm.nih.gov/biosample?LinkName=bioproject_biosample_all&from_uid=848687>
 
-About the sample ID of .fastq files:  https://www.ncbi.nlm.nih.gov/biosample?LinkName=bioproject_biosample_all&from_uid=848687
-
-1. SRR19635628 = Control 1 (2 samples/ID)
+1.  SRR19635628 = Control 1 (2 samples/ID)
 
 2.  SRR19635629 = Control 2
 
-3. SRR19635630 = Control 3
+3.  SRR19635630 = Control 3
 
-4. SRR19635631 = 26 deg Cels 
+4.  SRR19635631 = 26 deg Cels
 
-5. SRR19635632 = 26 deg Cels 
+5.  SRR19635632 = 26 deg Cels
 
-6. SRR19635633 = 26 deg Cels
+6.  SRR19635633 = 26 deg Cels
 
-7. SRR19635634 = 26 deg Cels
+7.  SRR19635634 = 26 deg Cels
 
-8. SRR19635635 = 26 deg Cels
+8.  SRR19635635 = 26 deg Cels
 
-9. SRR19635636 = 26 deg Cels
+9.  SRR19635636 = 26 deg Cels
 
 10. SRR19635637 = 30
 
 11. SRR19635638 = 30
- 
-12. SRR19635639 = 30 
 
+12. SRR19635639 = 30
 
-**RUN FastQC**
-Running FastQC program on PRJNA848687_fastq folder. This will generate a HTML report that can be viewed in a web browser.
-There are 22 samples total. 11 treatment, 11 control. 
-Line 28- this is how you run the fastqc program, similar to blast. 
+**RUN FastQC** Running FastQC program on PRJNA848687_fastq folder. This
+will generate a HTML report that can be viewed in a web browser. There
+are 12 unique samples total. Line 28- this is how you run the fastqc
+program, similar to blast.
 
 ```{bash}
+
 /home/shared/8TB_HDD_02/hannia/SeaCucumber/FastQC/fastqc \
 /home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq/*.fastq \
 -o /home/shared/8TB_HDD_02/hannia/SeaCucumber/output
-
 ```
-#The QC results show that all sampels have a red x for per base sequence content and sequence duplication levels. 
 
-#2. Get a reference genome of sea cucumber (Apostichopus japonicus) from:
-https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_037975245.1/
+#The QC results show that all sampels have a red x for per base sequence
+content and sequence duplication levels.
 
+#2. Get a reference genome of sea cucumber (Apostichopus japonicus)
+from: <https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_037975245.1/>
 
 ##curl into the SeaCucumber folder
+
 ```{bash}
 URL="https://api.ncbi.nlm.nih.gov/datasets/v2/genome/accession/GCF_037975245.1/download?include_annotation_type=GENOME_FASTA&include_annotation_type=GENOME_GFF&include_annotation_type=RNA_FASTA&include_annotation_type=CDS_FASTA&include_annotation_type=PROT_FASTA&include_annotation_type=SEQUENCE_REPORT&hydrated=FULLY_HYDRATED"
 
 curl -L "$URL" -o /home/shared/8TB_HDD_02/hannia/SeaCucumber/GCF_037975245.1_ref.zip
 ```
+
 ###unizp GCF_037975245.1_ref
+
 ```{bash}
 cd /home/shared/8TB_HDD_02/hannia/SeaCucumber
 unzip GCF_037975245.1_ref.zip -d GCF_037975245.1_ref 
 ```
+
 ####explore contents
+
 ```{bash}
 cd /home/shared/8TB_HDD_02/hannia/SeaCucumber/GCF_037975245.1_ref/ncbi_dataset/data/GCF_037975245.1
 ls
 
 ```
 
+**2. (Pseudo - alignment)** checking if single end or paired
 
-**2. (Pseudo - alignment)**
-checking if single end or paired
 ```{bash}
 head -4 /home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq/*.fastq          
 
 ```
 
-#making Kallisto index first b4 pseudo alignment (needed for Kallisto quant)
-#making index from ref transcriptome (rna.fna file)
-#answers above show that these files are paired-end FASTQ files 
-#index file: compressed data structure that allows fast pseudoalignment of RNA-Seq reads to a reference transcriptome.This is for faster alignment, does not align entire genome but instead matching transcripts.
+#making Kallisto index first b4 pseudo alignment (needed for Kallisto
+quant) #making index from ref transcriptome (rna.fna file) #answers
+above show that these files are paired-end FASTQ files #index file:
+compressed data structure that allows fast pseudoalignment of RNA-Seq
+reads to a reference transcriptome.This is for faster alignment, does
+not align entire genome but instead matching transcripts.
 
 ```{bash}
 /home/shared/kallisto/kallisto index \
@@ -103,19 +118,20 @@ head -4 /home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq/*.fastq
 /home/shared/8TB_HDD_02/hannia/SeaCucumber/GCF_037975245.1_ref/ncbi_dataset/data/GCF_037975245.1/rna.fna
 ```
 
-#completing pseudo alignment 
+#####BELOW CHUNK IS WRONG###
+
 ```{bash}
 /home/shared/kallisto/kallisto quant \
 -i /home/shared/8TB_HDD_02/hannia/SeaCucumber/index.idx \
 -o /home/shared/8TB_HDD_02/hannia/SeaCucumber/output /home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq/*.fastq
 ```
 
-
+###ABOVE CHUNK WRONG###
 
 **3. Differential Expression Analysis (Kallisto)**
 
-
-*Already created index, next step making output folder for kallisto data.*
+*Already created index, next step making output folder for kallisto
+data.*
 
 ```{r, engine='bash'}
 cd /home/shared/8TB_HDD_02/hannia/SeaCucumber 
@@ -124,9 +140,12 @@ mkdir /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01
 #mkdir makes new folder called kallisto01 up one directory level 
 ```
 
+###Note: Belo chunk is the right pseudo-alignment chunk##### *Running
+kallisto quantification command*: tells you how much of each transcript
+(mRNA isoform) is present in your RNA-Seq sample, based on the
+sequencing reads you provide. Quantifying abundance of expressed genes
+from samples.
 
-*Running kallisto quantification command*: tells you how much of each transcript (mRNA isoform) is present in your RNA-Seq sample, based on the sequencing reads you provide.
-Quantifying abundance of expressed genes from samples. 
 ```{r, engine='bash'}
 find /home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq/*_1.fastq \
 | xargs -n1 basename \
@@ -139,10 +158,13 @@ find /home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq/*_1.fastq \
 /home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq/{}_1.fastq \
 /home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq/{}_2.fastq
 ```
-Giving error that "--paired" not valid-> Kallisto automatically recognizes paired files. 
 
+Giving error that "--paired" not valid-\> Kallisto automatically
+recognizes paired files.
 
-*Below chunk is wrong, it does not tell Kallisto I have paired-end reads. Do not use. Re-did on chunk above to correct this.*
+*Below chunk is wrong, it does not tell Kallisto I have paired-end
+reads. Do not use. Re-did on chunk above to correct this.*
+
 ```{bash, eval=False}
 #!/bin/bash
 
@@ -170,9 +192,8 @@ done
 
 ```
 
-
-
-*Using abundance estimates from Kallisto quant to create gene expression matrix*
+*Using abundance estimates from Kallisto quant to create gene expression
+matrix*
 
 ```{r, engine='bash'}
 perl /home/shared/trinityrnaseq-v2.12.0/util/abundance_estimates_to_matrix.pl \
@@ -194,24 +215,44 @@ perl /home/shared/trinityrnaseq-v2.12.0/util/abundance_estimates_to_matrix.pl \
  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635639/abundance.tsv
 ```
 
-#chunk above gives error but created .matrix anyway 
+#chunk above gives error but created .matrix anyway
 
 **PART II. RUNNING DESeq2**
 
 *First, pre-process data!*
+
 ```{r}
 countmatrix <- read.table("~/SeaCucumber/output/kallisto_01.isoform.counts.matrix", header = TRUE, row.names = 1)
 head(countmatrix)
 ```
 
- 
-```{r}
-colnames(counts)
+filtering according to smallest treatment size of 3.
 
+```{r}
+# Load counts
+counts <- read.table("~/SeaCucumber/output/kallisto_01.isoform.counts.matrix", header=TRUE, row.names=1)
+
+# Filter: keep rows with counts >5 in at least 3 samples
+keep <- rowSums(counts > 5) >= 3
+filtered.counts <- counts[keep, ]
+
+# Summary
+cat("Before filtering:", nrow(counts), "isoforms\n")
+cat("After filtering:", nrow(filtered_counts), "isoforms\n")
 ```
 
 
+
+
+--- 
+```{r}
+colnames(counts) #counts-> is edited to have modified names of samples, ex. 26_1, 26_2, ect.
+colnames(counts.filtered)
+
+```
+
 Creating vector that renames file ID to meaningful ID
+
 ```{r}
 # Vector of new sample names in the correct order (must match column order in counts)
 new_names <- c("Control1", "Control2", "Control3", "26_1", "26_2", "26_3", "26_4", "26_5", "26_6", "30_1","30_2","30_3")
@@ -222,23 +263,28 @@ colnames(counts)
 head(countmatrix)
 
 ```
+
 ```{r}
 # Vector of conditions corresponding to each sample
 condition <- factor(new_names)
 condition
 ```
-Creating coldata frame 
+
+Creating coldata frame
+
 ```{r}
 # Create metadata for DESeq2
 coldata <- data.frame(condition)
 rownames(coldata) <- colnames(counts)
 ```
 
-Checking if did right 
+Checking if did right
+
 ```{r}
 all(rownames(coldata) == colnames(counts))
 # Should return TRUE
 ```
+
 ```{r}
 #checking if data has decimals or zeros 
 head(counts)
@@ -246,14 +292,15 @@ str(counts)
 #yes it does
 ```
 
-Converting counts to integers and removing NAs 
+Converting counts to integers and removing NAs
+
 ```{r}
 # Round to nearest integer (safer than floor/trunc)
 counts <- round(counts)
 ```
 
-
 Creating DESeq dataset
+
 ```{r}
 library(DESeq2)
 
@@ -262,7 +309,10 @@ ddsnewnames <- DESeqDataSetFromMatrix(countData = counts,
                               design = ~ condition)
 head(ddsnewnames)
 ```
-Now I have to rename the rows of the counts matrix to match the name of the genes given in the RNA.FNA file. Need biostrings package. 
+
+Now I have to rename the rows of the counts matrix to match the name of
+the genes given in the RNA.FNA file. Need biostrings package.
+
 ```{r}
 library(Biostrings)
 # Read the RNA.fna file
@@ -271,11 +321,17 @@ seqs <- readDNAStringSet("~/SeaCucumber/GCF_037975245.1_ref/ncbi_dataset/data/GC
 sequence_ids <- names(seqs)
 head(sequence_ids)
 ```
-These names are really long, not practical to use them for DESeq analysis, must find other method to display gene names during downstream analysis. Ask Steven about this. 
 
----
+These names are really long, not practical to use them for DESeq
+analysis, must find other method to display gene names during downstream
+analysis. Ask Steven about this.
 
-Re-doing the colnames bc what I did previously did not work with DESeq, was identifying each name as 12 different conditions and only one dataset for each, that is wrong.
+------------------------------------------------------------------------
+
+Re-doing the colnames bc what I did previously did not work with DESeq,
+was identifying each name as 12 different conditions and only one
+dataset for each, that is wrong.
+
 ```{r}
 condition <- factor(c(
   rep("control", 3),
@@ -289,6 +345,7 @@ colData <- data.frame(row.names = colnames(counts),
 
 re-creating deseq2 dataset and running DESeq2 analysis of the dataset
 deseq dataset (dds)
+
 ```{r}
 
 dds <- DESeqDataSetFromMatrix(countData = counts,
@@ -297,14 +354,19 @@ dds <- DESeqDataSetFromMatrix(countData = counts,
 dds <- DESeq(dds)
 res <- results(dds)
 ```
-Above chunk gives warning that DESeq is not using the control as the reference (for non-treated counts), have to tell deseq to use control as reference to get accurate analysis.
 
-Using relevel() to set control as reference 
+Above chunk gives warning that DESeq is not using the control as the
+reference (for non-treated counts), have to tell deseq to use control as
+reference to get accurate analysis.
+
+Using relevel() to set control as reference
+
 ```{r}
 dds$condition <- relevel(dds$condition, ref = "control")
 ```
 
-Re-running DESeq analysis 
+Re-running DESeq analysis
+
 ```{r}
 dds <- DESeq(dds)
 res <- results(dds)
@@ -316,20 +378,21 @@ dds
 ```
 
 Doing analysis with the 26 deg C.
+
 ```{r}
 res_26C_vs_control <- results(dds, contrast = c("condition", "26C", "control"))
 res_26C_vs_control
 ```
 
 Doing 26 degC vs 30degC
+
 ```{r}
 res_30C_vs_26C <- results(dds, contrast = c("condition", "30C", "26C"))
 res_30C_vs_26C
 ```
 
-
-
-**8. Reading in count matrix** \*Switching to R language and displaying first few rows.
+**8. Reading in count matrix** \*Switching to R language and displaying
+first few rows.
 
 ```{r}
 library(knitr)
@@ -343,13 +406,13 @@ countmatrix <- countmatrix[,-1]
 head(countmatrix)
 ```
 
-
 **9. Round integers up to hole numbers for further analysis.**
 
 ```{r, engine='r'}
 countmatrix <- round(countmatrix, 0)
 str(countmatrix) #like summary()
 ```
+
 ##RUNNING DESeq2
 
 ```{r}
@@ -367,9 +430,8 @@ if (!require("BiocManager", quietly = TRUE))
 BiocManager::install("DESeq2")
 ```
 
-
-Getting DEG based on Desication. Run this table using 2 control, 2 26 deg, and 2 30 deg. 
-
+Getting DEG based on Desication. Run this table using 2 control, 2 26
+deg, and 2 30 deg.
 
 ```{r, engine='r'}
 deseq2.colData <- data.frame(condition=factor(c(rep("control", 3), rep("26.C", 6), rep("30.C", 3))), 
@@ -380,18 +442,3 @@ deseq2.dds <- DESeqDataSetFromMatrix(countData = countmatrix,
                                      design = ~ condition)
 kable(head(deseq2.res), digits = 3, caption = "Top 6 Differential Expression Results")
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
