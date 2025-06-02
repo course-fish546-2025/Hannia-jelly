@@ -124,3 +124,5 @@ cat /home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fasta/*.fasta \
 
 
 
+
+
