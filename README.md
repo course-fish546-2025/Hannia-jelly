@@ -1,18 +1,14 @@
-## How to work in the Hannia-Jelly repo: 
+## How to work in the Hannia-Jelly repo:
 
 The files in this repo correspond to the work I completed in the FISH546 course.
 
-The 2 main folders with relevant files are called **assignments** & **homework**. In the **assignments** folder, you will find 5 folders:
+The 2 main folders with relevant files are called **assignments** & **homework**. In the **assignments** folder, you will find 3 folders:
 
-**data**: Data files I used to complete some of my assignments.
+-   **project**: Here you will find all of the scripts I worked on to complete my project. Go [here](http://rpubs.com/hannia/1316057) to access a compendium of my project.
 
-**images**: Images I produced from data analysis or pulled from the internet for class presentations.
+-   **output2**: Files that I generated from assingments, some of these files were created using the files in the **data** folder.
 
-**output**: Files that I generated from assingments, some of these files were created using the files in the **data** folder.
-
-**project**: Here you will find all of the scripts I worked on to complete my project. Go [here](http://rpubs.com/hannia/1316057) to access a compendium of my project.
-
-**scripts4assignments**: Here you will find completed scripts that correspond to the weekly assignments.
+-   **scripts4assignments**: Here you will find completed scripts that correspond to the weekly assignments.
 
 5.13.2025: Week 6 presentation slides <http://rpubs.com/hannia/1309796>
 
