@@ -1,0 +1,23 @@
+**Week 10 Questions**
+
+**Looking back on the quarter what are two things you were not expecting to learn but did, glad you did, and how would you implement this knowledge beyond this class?**
+
+I was not expecting to learn what different files are used for in bioinformatics, such as:
+rna.fna, fasta, fastq, .h5, ect, sam, bam, ect. Additionally, it was interesting to see which files can be converted to other versions (sam<->bam, fastq<->fasta). I found it very useful for future bioinformatics projects to know this because it can save me time to run a conversion command as opposed to creating the file from scratch. 
+
+**Rank the following from 1-5, with 1 being your best friend and 5 being your enemy (raven, rstudio, knitr, bash, github)**
+
+1. bash
+2. rstudio
+3. raven
+4. github
+5. knitr >:( gave me so many errors 
+
+**As part of your research project you must of learned something beyond methods. What is the most important biological finding from your work to to date?**
+
+The most important biological finding was the severity of DEG with only 4 degrees C of a differnce (26 vs 30). In my heatmap, most of the DEG were red, indicating a high expression values. This is particularly relevant in the context of climate change. Although water temperature will rely on the region, in the carribean, the water temperature can be as high as 28°C. The carribean is a region with many poor coastal communities live, some that rely on sea cucumbers. I can't say for sure that the species of sea cucumbers in the carribean can be affected as the Japanese sea cucumbers were, but it is something to consider when diving into this research study. 
+
+**Assuming you follow this line of research what is your long term goal of what you expect to learn about biology, ecology, or the environment?**
+
+My longterm goal in research is to learn about how resilient (or not) marine organisms are to environmental change induced by climate change and pollution. Although my goal would be to contribute to conservation, I think I will focus on applying my research to better inform management practices for coastal people that rely on marine ecosystems for subsistence. 
+
