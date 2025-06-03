@@ -1,0 +1,128 @@
+---
+title: "blastseacuc"
+author: "Hannia Larino"
+date: "2025-05-31"
+output: html_document
+---
+
+
+## I will be using BLAST to Swiss-Prot to ID the most DEG. 
+
+Installing NCBI software to raven (previously done on Jupyter)
+
+1.  Downloading latest NCBI software .gz file from  <https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/>
+
+Installing to applications folder in home/ directory 
+
+```{r, engine='bash'}
+
+cd /home/shared/8TB_HDD_02/hannia/applications #setting directory 
+curl -O https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.16.0+-x64-linux.tar.gz #uploading NCBI software to directory 
+tar -xf ncbi-blast-2.16.0+-x64-linux.tar.gz #extract files from .tar archive 
+
+```
+
+2.  Make a blast database. Download latest Swiss-Prot protein sequences.
+
+```{r, engine='bash'}
+cd /home/shared/8TB_HDD_02/hannia/blast
+curl -O https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz
+#curl -O saves output to a file. This file is an unzipped folder. 
+
+mv uniprot_sprot.fasta.gz uniprot_sprot_r2025_01.fasta.gz
+#mv used to move or rename files and directories 
+#accidentally renamed 2023 instead of 2025 
+
+gunzip -k uniprot_sprot_r2025_01.fasta.gz
+#gunzip -k decompresses file but preserves original .gz file. 
+ls 
+#lists files and directories in current directory, when run ls w/out argument, it displays names of files and folders in current directory 
+```
+```{r, engine='bash'}
+#checking to see first lines of file 
+head /home/shared/8TB_HDD_02/hannia/blast/uniprot* 
+```
+
+###This actually creates the BLAST database in the blastdb folder. Using "makeblastdb". Database located in "blast" folder in home directory. 
+
+```{r, engine='bash'}
+/home/shared/8TB_HDD_02/hannia/applications/ncbi-blast-2.16.0+/bin/makeblastdb \
+-in /home/shared/8TB_HDD_02/hannia/blast/uniprot_sprot_r2025_01.fasta \
+-dbtype prot \
+-out /home/shared/8TB_HDD_02/hannia/blast/uniprot_sprot_r2025_01
+
+```
+
+## Transforming 12 fastq files to fasta files to complete alignment 
+
+I am using "seqtk" to convert fastq files to fasta files. 
+
+Installing locally to applications folder: 
+```{bash}
+# Go to your home or working directory
+cd /home/shared/8TB_HDD_02/hannia/applications
+
+# Clone seqtk repo
+git clone https://github.com/lh3/seqtk.git
+
+# Enter directory
+cd /home/shared/8TB_HDD_02/hannia/applications/seqtk
+
+# Build
+make
+
+```
+Moving forward, will have to speciy in command line to use seqtk.c
+
+```{bash}
+ /home/shared/8TB_HDD_02/hannia/applications/seqtk/seqtk
+```
+
+
+
+# converting fastq to fasta. My fastq files are paired-ends, I chose to keep fasta files seperate and not merge bc unsure of differences/consequences of merging paired-end fastqs. 
+
+```{bash}
+cd /home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fasta
+
+for fq in /home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq/*_1.fastq; do
+  fqname=$(basename "$fq")               # e.g., SRRXXXXX_1.fastq
+  base="${fqname%_1.fastq}"              # e.g., SRRXXXXX
+  fq2="/home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq/${base}_2.fastq"
+
+  # Convert forward read
+   /home/shared/8TB_HDD_02/hannia/applications/seqtk/seqtk seq -A "$fq" > "${base}_1.fasta"
+
+  # Convert reverse read
+   /home/shared/8TB_HDD_02/hannia/applications/seqtk/seqtk seq -A "$fq2" > "${base}_2.fasta"
+done
+
+```
+
+## Combining all files to one
+
+```{bash}
+cat /home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fasta/*.fasta \
+> /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/seacuc_fastafilescombined.fasta
+```
+
+## Running BLAST
+```{r, engine='bash'}
+/home/shared/8TB_HDD_02/hannia/applications/ncbi-blast-2.16.0+/bin/blastx \
+-query /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/seacuc_fastafilescombined.fasta \
+-db /home/shared/8TB_HDD_02/hannia/blast/uniprot_sprot_r2025_01 \
+-out /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/Seacuc_blastx_sprotresults.tab \
+-evalue 1E-20 \
+-num_threads 20 \
+-max_target_seqs 1 \
+-outfmt 6
+```
+
+
+
+
+
+
+
+
+
