@@ -307,17 +307,15 @@ ggplot(top_terms, aes(x = reorder(term_name, -log10(p_value)),
   theme_minimal()
 ```
 
-## Top 10 significantly enriched terms
-
 ## ![](images/top_enriched_terms.png){width="1000"}
 
 ## Interpretation
 
-Most DEG genes in the 30degC group are of CF, MF, and TF.
-
 -   **2 groups**: Gene ontology & Biologcial Pathways
 
 -   CC = Cellular components, MF = Molecular function, TF = Transcription factors.
+
+-   Most DEG genes in the 30degC group correspond to genes relating to: CF, MF, and TFs involved biological pathways.
 
 ## Main finding
 
@@ -327,7 +325,7 @@ The lethal temperature of 30°C was found to cause the most stat. significant bi
 
 My scripts and small-size ouput files were uploaded to Github Hannia-jelly repository.
 
-Zenodo DOI: https://doi.org/10.5281/zenodo.15588345
+Zenodo DOI: https://doi.org/10.5281/zenodo.15599622
 
 ## References
 
