@@ -2,13 +2,15 @@
 
 The files in this repo correspond to the work I completed in the FISH546 course.
 
-The 2 main folders with relevant files are called **assignments** & **homework**. In the **assignments** folder, you will find 3 folders:
+The 2 main folders with relevant files are called **assignments**, **project**, & **homework**. 
 
 -   **project**: Here you will find all of the scripts I worked on to complete my project. Go [here](http://rpubs.com/hannia/1316057) to access a compendium of my project.
+In the **assignments** folder you will find: 
 
 -   **output2**: Files that I generated from assingments, some of these files were created using the files in the **data** folder.
 
 -   **scripts4assignments**: Here you will find completed scripts that correspond to the weekly assignments.
+-   **images**:Images I created from code or imported from the internet to my repo. 
 
 5.13.2025: Week 6 presentation slides <http://rpubs.com/hannia/1309796>
 
