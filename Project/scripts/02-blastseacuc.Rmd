@@ -6,7 +6,7 @@ output: html_document
 ---
 
 
-## I will be using BLAST to Swiss-Prot to ID the most DEG. 
+## I will be using BLAST and Swiss-Prot to merge my list of DEG (p-val </ 0.05) to conduct a biological analysis. 
 
 Installing NCBI software to raven (previously done on Jupyter)
 
@@ -53,6 +53,7 @@ head /home/shared/8TB_HDD_02/hannia/blast/uniprot*
 
 ```
 
+###############from here and indicated below, this code was successfully computated, but was not needed for what I was looking for, keeping for future purposes####################
 ## Transforming 12 fastq files to fasta files to complete alignment 
 
 I am using "seqtk" to convert fastq files to fasta files. 
@@ -77,7 +78,6 @@ Moving forward, will have to speciy in command line to use seqtk.c
 ```{bash}
  /home/shared/8TB_HDD_02/hannia/applications/seqtk/seqtk
 ```
-
 
 
 # converting fastq to fasta. My fastq files are paired-ends, I chose to keep fasta files seperate and not merge bc unsure of differences/consequences of merging paired-end fastqs. 
@@ -105,18 +105,29 @@ done
 cat /home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fasta/*.fasta \
 > /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/seacuc_fastafilescombined.fasta
 ```
+########ABOVE CHUNK NOT USED FOR FINAL ANALYSIS, KEEPING 4 FUTURE PURPOSES##############
 
-## Running BLAST
+
+## Running BLAST: Real code i used for analysis. 
 ```{r, engine='bash'}
 /home/shared/8TB_HDD_02/hannia/applications/ncbi-blast-2.16.0+/bin/blastx \
--query /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/seacuc_fastafilescombined.fasta \
--db /home/shared/8TB_HDD_02/hannia/blast/uniprot_sprot_r2025_01 \
--out /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/Seacuc_blastx_sprotresults.tab \
--evalue 1E-20 \
--num_threads 20 \
--max_target_seqs 1 \
--outfmt 6
+> -query /home/shared/8TB_HDD_02/hannia/SeaCucumber/GCF_037975245.1_ref/ncbi_dataset/data/GCF_037975245.1/rna.fna \
+> -db /home/shared/8TB_HDD_02/hannia/blast/uniprot_sprot_r2025_01 \
+> -out /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/Seacuc_blastx_sprotresults.tab \
+> -evalue 1E-20 \
+> -num_threads 20 \
+> -max_target_seqs 5 \
+> -outfmt 6
 ```
+
+## viewing blast 
+
+```{bash}
+head /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/Seacuc_blastx_sprotresults.tab
+```
+
+
+
 
 
 

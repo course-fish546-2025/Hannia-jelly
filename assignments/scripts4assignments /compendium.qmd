@@ -1,7 +1,7 @@
 ---
 title: "Compendium of FISH546 project"
 author: Hannia Larino
-date: "2025"
+date: "June 05 2025"
 format: revealjs
 editor: visual
 execute:
@@ -109,8 +109,14 @@ cat("Before filtering:", nrow(counts), "isoforms\n")
 cat("After filtering:", nrow(filtered_counts), "isoforms\n")
 ```
 
-Results: Before filtering: 56281 isoforms 
-After filtering: 29310 isoforms
+Results: Before filtering: 56281 isoforms After filtering: 29310 isoforms
+
+
+
+
+
+
+
 
 ## B. Results so far (week 8)
 
@@ -139,9 +145,12 @@ Visualization of results: MA Plot
 
 -   I want to identify these genes and group them by families to try to analyze the potential physiological effects that 30°C temperature, a lethal temperature, had on *Apostichopus japonicus.*
 
-## Refer to readme.md to know how to navigate the repo for this project.
+## How to access my scripts and output folder
+
+My scripts and small-size ouput files were uploaded to Github Hannia-jelly repository.
+
+Zenodo DOI: https://doi.org/10.5281/zenodo.15588345
 
 ## References
 
-Xu, D., Zhang, J., Song, W., Sun, L., Liu, J., Gu, Y., Chen, Y., & Xia, B. (2023). Analysis of differentially expressed genes in the sea cucumber Apostichopus japonicus under heat stress. Acta Oceanologica Sinica, 42(11), 117–126. https://doi.org/10.1007/s13131-023-2196-4
-
+Xu, D., Zhang, J., Song, W., Sun, L., Liu, J., Gu, Y., Chen, Y., & Xia, B. (2023). Analysis of differentially expressed genes in the sea cucumber Apostichopus japonicus under heat stress. Acta Oceanologica Sinica, 42(11), 117--126. https://doi.org/10.1007/s13131-023-2196-4
