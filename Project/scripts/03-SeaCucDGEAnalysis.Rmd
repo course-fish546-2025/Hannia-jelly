@@ -53,14 +53,12 @@ library(data.table)
 Creating vector that renames file ID to meaningful ID
 
 ```{r}
-# Vector of new sample names in the correct order (must match column order in counts)
+# Vector of new sample names in the correct order
 new.names <- c("Control 1", "Control 2", "Control 3", "26.a1", "26.a2", "26.a3", "26.b1", "26.b2", "26.b3", "30.a1","30.a2","30.a3")
-
 # Apply new names to the columns
 colnames(filtered.counts) <- new.names
 colnames(filtered.counts)
 head(filtered.counts)
-
 ```
 
 Telling R we have 3 conditions and the control.
@@ -70,6 +68,7 @@ condition <- factor(rep(c("Control", "26.a", "26.b", "30.a"), each = 3),
                     levels = c("Control", "26.a", "26.b", "30.a"))
 condition
 ```
+
 
 ```{r}
 deseq2.colData <- data.frame(condition = condition, 
@@ -95,15 +94,15 @@ explore the results from below chunk
 ```{r}
 # Count number of hits with adjusted p-value less then 0.05
 dim(deseq2.res[!is.na(deseq2.res$padj) & deseq2.res$padj <= 0.05, ])
-```
 
-```{r}
 head(deseq2.res[order(deseq2.res$padj), ])  # sorted by adjusted p-value
 ```
 
+
+
 VISUALIZATION BELOW
 
-Heat map from assignment tmp=the main plot
+tmp=the main plot
 
 ```{r}
 tmp <- deseq2.res
@@ -186,7 +185,8 @@ colnames(blastresults$gene_symbol)
 
 ```{r}
 deg.annotated <- merge(DEGtable, blastresults, by = "transcriptID", all.x = TRUE)
-deg.annotated
+write.csv(deg.annotated, "~/SeaCucumber/output/deg_annotated.csv", row.names = FALSE)
+#made the csv for the presentation
 ```
 
 ## Part 3: Functional analysis
@@ -219,6 +219,7 @@ deg.annotated
 
 ```{r}
 functional.merge <- merge(deg.annotated, uniprot.annot, by.x = "accession", by.y = "From", all.x = TRUE)
+write.csv(functional.merge, "~/SeaCucumber/output/functional_merge.csv", row.names = FALSE) #for slides
 ```
 #### MAIN DATA TABLE BELOW: functional.merge
 ## This data table is a compilation of DEseq2 resutls (p-val \</ 0.05), BLAST to Swiss-Prot results, and Uniprot ID mapping results.
@@ -230,7 +231,7 @@ functional.merge
 ## enrichment analysis (final analysis) using gprofiler2 package to use gost()
 
 ```{r}
-deg_ids <- unique(deg.annotated$accession) #getting accession (used for uniprot id mapping)
+deg_ids <- unique(deg.annotated$accession) #getting accession ID (used for uniprot id mapping)
 ```
 
 ```{r}
@@ -239,10 +240,8 @@ install.packages("gprofiler2")
 
 ```{r}
 library(gprofiler2)
-
 # Use cleaned UniProt accessions of DEGs
 gost.res <- gost(query = deg_ids, organism = "hsapiens") #using hsapiens as organism lol
-
 
 ```
 
@@ -256,7 +255,7 @@ head(gost.res)
 # Select top 10 significant terms
 top_terms <- head(gost.res$result[order(gost.res$result$p_value), ], 10)
 
-ggplot(top_terms, aes(x = reorder(term_name, -log10(p_value)), 
+plot<- ggplot(top_terms, aes(x = reorder(term_name, -log10(p_value)), 
                       y = -log10(p_value), 
                       fill = source)) +
   geom_col() +
@@ -264,6 +263,7 @@ ggplot(top_terms, aes(x = reorder(term_name, -log10(p_value)),
   labs(title = "Top Enriched Terms", x = "GO/Pathway Term", y = "-log10(p-value)") +
   theme_minimal()
 
+ggsave("~/Hannia-jelly/assignments/images/top_enriched_terms.png", plot = plot, width = 8, height = 5, dpi = 300)
 ```
 ## end of project, see compendium for analysis of data. 
 

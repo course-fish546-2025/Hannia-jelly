@@ -5,7 +5,8 @@ date: "June 05 2025"
 format: revealjs
 editor: visual
 execute:
-  eval: false   
+  eval: false
+  echo: true      
 ---
 
 ## Differential Gene Expression Analysis Project
@@ -14,13 +15,27 @@ I am using RNA-seq data taken from Sea Cucumbers (*Apostichopus japonicus*) that
 
 ## Methods
 
-The design experiment consisted of 3 controls maintained at 18°C. Six sub-lethal temperature treatment groups (26°C) and three lethal temperature treatment groups (30°C). The treatment groups went through a temperature-rise process from 18°C to 26°C or to 30°C respectively, with a rate of 2°C per hour by using a heating rod. The 26°C treatment group was able to be kept at that temperature for 6 hours and 48 hours, creating two treatment groups within the 26°C treatment group (6 hrs vs 48 hrs). The 30°C treatment group was only kept at 30°C for 6 hours. The researchers state that there was full mortality of the organisms when they did try to create a 48 hr group within this temperature treatment. Intestine tissue was obtained for RNA-Seq analysis.
+-   Variables: Time and Temperature.
+
+-   3 groups: control (18°C), 26°C (sub-lethal), and 30°C (lethal).
+
+-   Time: 6 hrs and 48 hrs.
+
+-   26°C kept at 6 hrs and 48 hrs, 3 replicates each.
+
+-   30°C kept at 6 hrs, 3 replicates.
+
+-   Researchers note 30°C at 48 hrs killed their sea cucumbers.
 
 ## Code
 
-4 sections.
+3 parts, 3 scripts.
 
-## Part 1: Obtain data & conduct quality check (QC)
+![](images/seacuc.jpg){fig-align="center"}
+
+## Part 1: Pseudo-alignment
+
+## 1.1: Obtain data & conduct quality check (QC)
 
 FastQ files were obtained from NCBI. Accession code being: PRJNA848687. More information about the data can be found [here](https://www.ncbi.nlm.nih.gov/bioproject/848687). Go [here](https://www.ncbi.nlm.nih.gov/biosample?LinkName=bioproject_biosample_all&from_uid=848687) if you want to access information about the individual files (12 total).
 
@@ -33,15 +48,19 @@ The quality check was done using FastQC:
 -o /home/shared/8TB_HDD_02/hannia/SeaCucumber/output
 ```
 
-Results: HTML results of QC did not show presence of outliers that needed to be removed. Refer to \~SeaCucumber/output_fastqc for the html files.
+## Results of FastQC
 
-## Part 2: Pseudo-alignment
+![](images/FastQC30degsample.png){fig-align="center"}
+
+Results looked normal for paired-end reads. Generally, all files looked like this.
+
+Refer to \~Hannia-jelly/Project/output/output_fastqc for the html files.
+
+## 1.2: Pseudo-alignment using Kallisto
 
 The reference genome of *Apostichopus japonicus* for the pseudo-alignment was obtained from NCBI and can be accessed [here](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_037975245.1/). The **NCBI RefSeq assembly ID is:** GCF_037975245.1.
 
-Pseudo-aligment was done using Kallisto. An index was created first (1). Then the pseudo-alignment was completed using Kallisto quant for paired-end reads (2).
-
-1.  Creating the index from the rna.fna of the reference genome.
+**Creating the index using Kallisto from the rna.fna of the reference genome**
 
 ```{bash}
 #| echo: true
@@ -50,9 +69,7 @@ Pseudo-aligment was done using Kallisto. An index was created first (1). Then th
 /home/shared/8TB_HDD_02/hannia/SeaCucumber/GCF_037975245.1_ref/ncbi_dataset/data/GCF_037975245.1/rna.fna
 ```
 
-## Part 2: Pseudo-alignment
-
-2 . Using Kallisto quant to complete the pseudo-alignment.
+## 1.3 . Using Kallisto quant to complete the pseudo-alignment.
 
 ```{bash}
 #| echo: true
@@ -68,7 +85,7 @@ find /home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq/*_1.fastq \
 /home/shared/8TB_HDD_02/hannia/SeaCucumber/PRJNA848687_fastq/{}_2.fastq
 ```
 
-## Part 3: Creating a gene expresison matrix
+## 1.4: Creating a gene expresison matrix
 
 ```{bash}
 #| echo: true
@@ -91,12 +108,40 @@ perl /home/shared/trinityrnaseq-v2.12.0/util/abundance_estimates_to_matrix.pl \
  /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/kallisto_01/SRR19635639/abundance.tsv
 ```
 
-## Part 4: DESeq2 for DGE analysis
+## 1.4: head of .matrix file
 
-A. First step is to filter data for low-read counts in the matrix.
+```{bash, eval = TRUE}
+head ~/SeaCucumber/output/kallisto_01.isoform.counts.matrix
+```
 
-```{r}
-#| echo: true
+## Part 2.0: BLAST rna.fna to Swiss-prot for functional analysis
+
+```{bash}
+/home/shared/8TB_HDD_02/hannia/applications/ncbi-blast-2.16.0+/bin/blastx \
+> -query /home/shared/8TB_HDD_02/hannia/SeaCucumber/GCF_037975245.1_ref/ncbi_dataset/data/GCF_037975245.1/rna.fna \
+> -db /home/shared/8TB_HDD_02/hannia/blast/uniprot_sprot_r2025_01 \
+> -out /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/Seacuc_blastx_sprotresults.tab \
+> -evalue 1E-20 \
+> -num_threads 20 \
+> -max_target_seqs 5 \
+> -outfmt 6
+```
+
+## 2.0 head of blastx results
+
+```{bash, eval = TRUE}
+head /home/shared/8TB_HDD_02/hannia/SeaCucumber/output/Seacuc_blastx_sprotresults.tab
+```
+
+## Part 3: Data Analysis
+
+![](images/other%20seacuc.jpg){fig-align="center"}
+
+## 3.1: DESeq2 for DGE analysis
+
+Reading in counts and filtering to keep counts that have **more than 5 counts in at least 3 samples.**
+
+```{r, eval=TRUE}
 # Load counts
 counts <- read.table("~/SeaCucumber/output/kallisto_01.isoform.counts.matrix", header=TRUE, row.names=1)
 
@@ -106,44 +151,177 @@ filtered.counts <- counts[keep, ]
 
 # Summary
 cat("Before filtering:", nrow(counts), "isoforms\n")
-cat("After filtering:", nrow(filtered_counts), "isoforms\n")
+cat("After filtering:", nrow(filtered.counts), "isoforms\n")
 ```
 
-Results: Before filtering: 56281 isoforms After filtering: 29310 isoforms
+## 3.1 Final filtered.counts data frame
 
+This is rounded to nearest integer & and has proper meaningful column names.
 
+```{r, eval=TRUE}
+#rounding to nearest integer
+filtered.counts <- round(filtered.counts, 0)
+str(filtered.counts)
 
+# Vector of new sample names in the correct order
+new.names <- c("Control 1", "Control 2", "Control 3", "26.a1", "26.a2", "26.a3", "26.b1", "26.b2", "26.b3", "30.a1","30.a2","30.a3")
+# Apply new names to the columns
+colnames(filtered.counts) <- new.names
+head(filtered.counts)
 
+```
 
+## Libraries used for downstream analysis
 
+```{r, eval=TRUE}
+library(DESeq2)
+library(tidyverse)
+library(pheatmap)
+library(RColorBrewer)
+library(data.table)
+library(gprofiler2)
+```
 
+## 3.2 Setting up data frames for DESeq2( )
 
-## B. Results so far (week 8)
+```{r, eval=TRUE}
+condition <- factor(rep(c("Control", "26.a", "26.b", "30.a"), each = 3),
+                    levels = c("Control", "26.a", "26.b", "30.a"))
+condition
+deseq2.colData <- data.frame(condition = condition, 
+                             type=factor(rep("paired", 12)))
 
-Visualization of results: MA Plot
+rownames(deseq2.colData) <- colnames(filtered.counts)
 
-![](images/MA%20figure.png){fig-align="center" width="938"}
+deseq2.data <- DESeqDataSetFromMatrix(countData = filtered.counts,
+                                     colData = deseq2.colData, 
+                                     design = ~ condition)
 
--   1,388 genes are respresented by the red dots and have a p-val below 0.05.
--   MA plot shows clear significant distinction (blue lines) between significant gene expression levels (red dots).
+```
 
-## Top 50 diferentially expressed genes:
+## 3.3 Running DESeq( ) command
 
-![](images/heat%20map%20filtered%20counts.png){fig-align="center"}
+```{r, eval=TRUE}
+deseq2.data <- DESeq(deseq2.data)
+deseq2.res <- results(deseq2.data)
+deseq2.res <- deseq2.res[order(rownames(deseq2.data)), ]
+```
 
-## Results of heat map:
+## 3.4 DESeq results
 
--   Group 30_a (Treatment group: 30°C for 6 hrs) shows deferentially expressed genes with lowest p-vals.
+```{r, eval=TRUE}
+# Count number of hits with adjusted p-value less then 0.05
+dim(deseq2.res[!is.na(deseq2.res$padj) & deseq2.res$padj <= 0.05, ])
 
--   Evidently, group 30_a in comparison to the control group shows drastic differences, with group 30_a showing the most red clusters (high expression values), whereas the control group shows the most blue clusters (low expression values) of the corresponding genes.
+head(deseq2.res[order(deseq2.res$padj), ])  # sorted by adjusted p-value
+```
 
--   Contrastingly, the treatment group 26_a and 26_b (Treatment group: 26°C for 6 and 48 hrs) showed average (yellow) or negative (blue) expression levels. Except for one outlier in the sample labelled 26_a2.
+## 3.4 Visualizing DESeq( ) results
 
-## Plan for next 2 weeks
+```{r}
+tmp <- deseq2.res
+# The main plot
+plot(tmp$baseMean, tmp$log2FoldChange, pch=20, cex=0.45, ylim=c(-3, 3), log="x", col="darkgray",
+     main="DEG of control and 30degC data (pval <= 0.05)",
+     xlab="mean of normalized counts",
+     ylab="Log2 Fold Change")
 
--   The total genes that have a p-value \< 0.05 is 1388 in 6 groups (control and 30°C group).
+# Getting the significant points and plotting them again so they're a different color
+tmp.sig <- deseq2.res[!is.na(deseq2.res$padj) & deseq2.res$padj <= 0.05, ]
+points(tmp.sig$baseMean, tmp.sig$log2FoldChange, pch=20, cex=0.45, col="red")
+# 2 FC lines
+abline(h=c(-1,1), col="blue")
+```
 
--   I want to identify these genes and group them by families to try to analyze the potential physiological effects that 30°C temperature, a lethal temperature, had on *Apostichopus japonicus.*
+## 3.4 The Main Plot
+
+![](images/finalnormcountsfig.png){fig-align="center"}
+
+## 3.4 More visualization of DESeq( ) results
+
+**Figure of Top 50 Deferentially Expressed Genes:**
+
+![](images/heat%20map%20filtered%20counts-01.png){fig-align="center"}
+
+## 3.5 Merging BLAST & DESeq2 Results for functional analysis
+
+Go to \~/Hannia-jelly/Project/scripts/03-SeaCucDGEAnalysis.Rmd for full code of this step.
+
+```{r}
+# Merge the data
+deg.annotated <- merge(DEGtable, blastresults, by = "transcriptID", all.x = TRUE)
+```
+
+```{r, eval=TRUE}
+# Display only the first 5 rows
+head(read.csv("~/SeaCucumber/output/deg_annotated.csv"), 5)
+```
+
+## 3.6 Uniprot ID mapping
+
+First, created a text file of the **subject_id** column to paste into the Uniprot ID mapping [website](https://www.uniprot.org/id-mapping)to conduct functional analysis.
+
+```{r}
+deg.annotated$accession <- sub("sp\\|(.*?)\\|.*", "\\1", deg.annotated$subject_id)
+write.table(deg.annotated$accession, file = "~/SeaCucumber/output/uniprot_ids.txt", quote = FALSE, row.names = FALSE, col.names = FALSE)
+```
+
+Downloaded .tsv to directory and merged with **deg.annotated** table
+
+```{r}
+functional.merge <- merge(deg.annotated, uniprot.annot, by.x = "accession", by.y = "From", all.x = TRUE)
+```
+
+## Head of functional.merge data frame
+
+```{r, eval=TRUE}
+head(read.csv("~/SeaCucumber/output/functional_merge.csv"), 5)
+```
+
+## 3.7 gprofiler2 package to use gost( ) command
+
+Performing a **Gene Ontology (GO)/ Pathway enrichment analysis** using **UniProt accession IDs.**
+
+```{r}
+deg_ids <- unique(deg.annotated$accession) #getting accession ID (used for uniprot id mapping)
+
+library(gprofiler2)
+
+# Use cleaned UniProt accessions of DEGs
+gost.res <- gost(query = deg_ids, organism = "hsapiens") 
+
+```
+
+## 3.7 Visualizing **Gene Ontology (GO)/ Pathway enrichment analysis**
+
+```{r}
+# Select top 10 significant terms
+top_terms <- head(gost.res$result[order(gost.res$result$p_value), ], 10)
+
+ggplot(top_terms, aes(x = reorder(term_name, -log10(p_value)), 
+                      y = -log10(p_value), 
+                      fill = source)) +
+  geom_col() +
+  coord_flip() +
+  labs(title = "Top Enriched Terms", x = "GO/Pathway Term", y = "-log10(p-value)") +
+  theme_minimal()
+```
+
+## Top 10 significantly enriched terms
+
+## ![](images/top_enriched_terms.png){width="1000"}
+
+## Interpretation
+
+Most DEG genes in the 30degC group are of CF, MF, and TF.
+
+-   **2 groups**: Gene ontology & Biologcial Pathways
+
+-   CC = Cellular components, MF = Molecular function, TF = Transcription factors.
+
+## Main finding
+
+The lethal temperature of 30°C was found to cause the most stat. significant biological changes in gene expression of Japanese Sea Cucumber. These genes correspond to CF, MF, and TF. Additionally, the time variable within the 26 °C group (6hr vs 48) was not found to have a significant impact on gene expression. The differences of DEG between the 26 and 30 °C groups were also not significantly different.
 
 ## How to access my scripts and output folder
 
